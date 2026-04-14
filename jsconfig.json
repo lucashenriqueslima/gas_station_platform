@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./inertia/*"],
+      "~/*": ["./inertia/*"]
+    }
+  },
+  "include": ["inertia/**/*.ts", "inertia/**/*.tsx"]
+}
