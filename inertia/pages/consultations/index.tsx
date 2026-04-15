@@ -1,15 +1,31 @@
 import { type ReactNode } from 'react'
+import { Link } from '@adonisjs/inertia/react'
 import { type ColumnDef } from '@tanstack/react-table'
+import { Eye, MoreHorizontal } from 'lucide-react'
 import AppLayout from '~/layouts/app'
 import { InertiaProps } from '~/types'
+import { Button } from '~/components/ui/button'
 import { DataTable, type DataTableFilters, type PaginationMeta } from '~/components/ui/data-table'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu'
 
 type ConsultationRow = {
   id: number
+  ilevaVehicleId: number | null
   licensePlate: string
-  partner: string
+  partner: string | null
+  partnerLabel: string | null
+  vehicleSituation: string
+  wasRefueled: boolean
   consultedBy: string
+  consultedByLabel: string
+  fuelPumpVisorImage: string | null
   createdAt: string
+  updatedAt: string | null
 }
 
 type Props = InertiaProps<{
@@ -30,19 +46,50 @@ const columns: ColumnDef<ConsultationRow>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: 'partner',
+    accessorKey: 'partnerLabel',
     header: 'Parceiro',
     enableSorting: true,
   },
   {
-    accessorKey: 'consultedBy',
+    accessorKey: 'consultedByLabel',
     header: 'Consultado por',
     enableSorting: true,
+  },
+  {
+    accessorKey: 'wasRefueled',
+    header: 'Foi Abastecido',
+    enableSorting: true,
+    cell: ({ row }) => (row.original.wasRefueled ? 'Sim' : 'Não'),
   },
   {
     accessorKey: 'createdAt',
     header: 'Data',
     enableSorting: true,
+  },
+  {
+    id: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Abrir ações da consulta ${row.original.id}`}
+          >
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            <Link href={`/consultas/${row.original.id}`}>
+              <Eye className="h-4 w-4" />
+              Ver mais
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ]
 

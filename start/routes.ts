@@ -10,6 +10,7 @@
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
+import './routes/gas_station_app_routes.js'
 
 router
   .get('/', async ({ auth, response, inertia }) => {
@@ -35,6 +36,9 @@ router
   .group(() => {
     router.post('logout', [controllers.Session, 'destroy']).as('session.destroy')
     router.resource('usuarios', controllers.Users).as('users').only(['index', 'create', 'store'])
-    router.resource('consultas', controllers.Consultations).as('consultations').only(['index'])
+    router
+      .resource('consultas', controllers.Consultations)
+      .as('consultations')
+      .only(['index', 'show'])
   })
   .use(middleware.auth())

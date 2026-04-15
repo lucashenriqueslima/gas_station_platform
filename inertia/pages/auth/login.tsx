@@ -10,7 +10,7 @@ export default function Login() {
       <div className="flex w-full max-w-sm flex-col gap-6">
         <div className="text-center">
           <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">Admin</p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight">Gas Station Platform</h1>
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight">Plataforma Solidy Fuel</h1>
         </div>
 
         <Card className="w-full">

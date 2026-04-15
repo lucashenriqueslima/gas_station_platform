@@ -6,5 +6,6 @@ const apiController = controllers.api.v1.gasStationApp
 router
   .group(() => {
     router.post('/consultations', [apiController.Consultantions, 'store'])
+    router.patch('/consultations/:id', [apiController.Consultantions, 'update'])
   })
   .prefix('/api/v1/gas-station-app')

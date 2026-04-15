@@ -6,6 +6,18 @@ import type { ApiDefinition } from './tree.d.ts'
 const placeholder: any = {}
 
 const routes = {
+  'consultantions.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/gas-station-app/consultations',
+    tokens: [{"old":"/api/v1/gas-station-app/consultations","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/consultations","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/consultations","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/consultations","type":0,"val":"consultations","end":""}],
+    types: placeholder as Registry['consultantions.store']['types'],
+  },
+  'consultantions.update': {
+    methods: ["PATCH"],
+    pattern: '/api/v1/gas-station-app/consultations/:id',
+    tokens: [{"old":"/api/v1/gas-station-app/consultations/:id","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/consultations/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/consultations/:id","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/consultations/:id","type":0,"val":"consultations","end":""},{"old":"/api/v1/gas-station-app/consultations/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['consultantions.update']['types'],
+  },
   'home': {
     methods: ["GET","HEAD"],
     pattern: '/',
@@ -65,6 +77,12 @@ const routes = {
     pattern: '/consultas',
     tokens: [{"old":"/consultas","type":0,"val":"consultas","end":""}],
     types: placeholder as Registry['consultations.index']['types'],
+  },
+  'consultations.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/consultas/:id',
+    tokens: [{"old":"/consultas/:id","type":0,"val":"consultas","end":""},{"old":"/consultas/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['consultations.show']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
 

@@ -21,13 +21,7 @@ export default class ConsultationsController {
     )
 
     return inertia.render('consultations/index', {
-      data: consultations.all().map((consultation) => ({
-        id: consultation.id,
-        licensePlate: consultation.licensePlate,
-        partner: consultation.partner,
-        consultedBy: consultation.consultedBy,
-        createdAt: consultation.formattedCreatedAt,
-      })),
+      data: consultations.all().map((consultation) => this.serializeConsultation(consultation)),
       meta: {
         total: consultations.getMeta().total,
         perPage: consultations.getMeta().perPage,
@@ -36,5 +30,30 @@ export default class ConsultationsController {
       },
       filters: table.filters,
     })
+  }
+
+  async show({ params, inertia }: HttpContext) {
+    const consultation = await Consultation.findOrFail(params.id)
+
+    return inertia.render('consultations/show', {
+      consultation: this.serializeConsultation(consultation),
+    })
+  }
+
+  private serializeConsultation(consultation: Consultation) {
+    return {
+      id: consultation.id,
+      ilevaVehicleId: consultation.ilevaVehicleId,
+      licensePlate: consultation.licensePlate,
+      partner: consultation.partner,
+      partnerLabel: consultation.partnerLabel,
+      vehicleSituation: consultation.vehicleSituation,
+      wasRefueled: consultation.wasRefueled,
+      consultedBy: consultation.consultedBy,
+      consultedByLabel: consultation.consultedByLabel,
+      fuelPumpVisorImage: consultation.fuelPumpVisorImage,
+      createdAt: consultation.formattedCreatedAt,
+      updatedAt: consultation.updatedAt?.toFormat('dd/MM/yyyy HH:mm') ?? null,
+    }
   }
 }

@@ -20,18 +20,13 @@ export default class Consultation extends ConsultationSchema {
     return this.createdAt.toFormat('dd/MM/yyyy HH:mm')
   }
 
-  // @column({ isPrimary: true })
-  // declare id: number
-  // @column()
-  // declare ilevaVehicleId: number
-  // @column()
-  // declare licensePlate: string
-  // @column()
-  // declare partner: Partner
-  // @column()
-  // declare vehicleSituation: string
-  // @column.dateTime({ autoCreate: true })
-  // declare createdAt: DateTime
-  // @column.dateTime({ autoCreate: true, autoUpdate: true })
-  // declare updatedAt: DateTime | null
+  get partnerLabel() {
+    return this.partner ? this.partner.charAt(0).toUpperCase() + this.partner.slice(1) : ''
+  }
+
+  get consultedByLabel() {
+    if (this.consultedBy == ConsultedBy.cpf) return 'CPF'
+
+    return 'Placa'
+  }
 }

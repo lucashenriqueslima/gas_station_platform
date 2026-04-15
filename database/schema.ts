@@ -8,24 +8,28 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class ConsultationSchema extends BaseModel {
-  static $columns = ['consultedBy', 'createdAt', 'id', 'ilevaVehicleId', 'licensePlate', 'partner', 'updatedAt', 'vehicleSituation'] as const
+  static $columns = ['consultedBy', 'createdAt', 'fuelPumpVisorImage', 'id', 'ilevaVehicleId', 'licensePlate', 'partner', 'updatedAt', 'vehicleSituation', 'wasRefueled'] as const
   $columns = ConsultationSchema.$columns
   @column()
   declare consultedBy: string
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+  @column()
+  declare fuelPumpVisorImage: string | null
   @column({ isPrimary: true })
   declare id: number
   @column()
-  declare ilevaVehicleId: number
+  declare ilevaVehicleId: number | null
   @column()
   declare licensePlate: string
   @column()
-  declare partner: string
+  declare partner: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
   declare vehicleSituation: string
+  @column()
+  declare wasRefueled: boolean
 }
 
 export class UserSchema extends BaseModel {
