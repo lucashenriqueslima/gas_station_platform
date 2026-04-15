@@ -5,7 +5,8 @@ module.exports = {
       cwd: '/var/www/gas_station_platform/build',
       script: './bin/server.js',
       instances: 1,
-      exec_mode: 'cluster',
+      exec_mode: 'fork',
+      autorestart: true,
       env: {
         NODE_ENV: 'production',
         PORT: 3333,
