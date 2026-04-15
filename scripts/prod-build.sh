@@ -72,7 +72,7 @@ if [ -d "$PROJECT_ROOT/credentials" ]; then
   cp -R "$PROJECT_ROOT/credentials" "$BUILD_DIR/"
 fi
 
-cd "$PROJECT_ROOT"
-ensure_min_pm2_instances "$APP_NAME" "$MIN_ZERO_DOWNTIME_INSTANCES"
-reload_or_start_app "$APP_NAME"
-restart_or_start_process "$SCHEDULER_NAME"
+# cd "$PROJECT_ROOT"
+# ensure_min_pm2_instances "$APP_NAME" "$MIN_ZERO_DOWNTIME_INSTANCES"
+# reload_or_start_app "$APP_NAME"
+# restart_or_start_process "$SCHEDULER_NAME"
