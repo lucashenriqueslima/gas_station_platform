@@ -89,6 +89,14 @@ export default function ClientVouncherShow({ vouncher }: Props) {
         <section className="overflow-hidden rounded-[2rem] border border-white/40 bg-slate-950 text-white shadow-[0_30px_120px_rgba(15,23,42,0.18)]">
           <div className="grid gap-8 px-6 py-8 md:px-8 md:py-10 xl:grid-cols-[1.1fr_360px]">
             <div className="space-y-6">
+              <div className="inline-flex rounded-[1.75rem] border border-white/10 bg-white px-4 py-3 shadow-[0_18px_60px_rgba(15,23,42,0.22)]">
+                <img
+                  src="/solidy-vertical-verde.png"
+                  alt="Solidy Beneficios"
+                  className="h-20 w-auto md:h-24"
+                />
+              </div>
+
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="outline" className="border-white/20 bg-white/10 text-white">
                   Voucher
