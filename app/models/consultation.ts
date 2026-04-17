@@ -10,6 +10,7 @@ export const Partner = {
 export const ConsultedBy = {
   license_plate: 'license_plate',
   cpf: 'cpf',
+  vouncher: 'vouncher',
 } as const
 
 export type Partner = (typeof Partner)[keyof typeof Partner]

@@ -48,7 +48,7 @@ export default class ConsultationsController {
       partner: consultation.partner,
       partnerLabel: consultation.partnerLabel,
       vehicleSituation: consultation.vehicleSituation,
-      wasRefueled: consultation.wasRefueled,
+      wasRefueled: Boolean(consultation.wasRefueled),
       consultedBy: consultation.consultedBy,
       consultedByLabel: consultation.consultedByLabel,
       fuelPumpVisorImage: consultation.fuelPumpVisorImage,

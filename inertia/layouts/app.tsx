@@ -7,7 +7,16 @@ import { Button } from '~/components/ui/button'
 import { Separator } from '~/components/ui/separator'
 import { Card, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { cn } from '~/lib/utils'
-import { LayoutDashboard, LogOut, Menu, Search, Users, X, type LucideProps } from 'lucide-react'
+import {
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Search,
+  Ticket,
+  Users,
+  X,
+  type LucideProps,
+} from 'lucide-react'
 
 type NavItem = {
   label: string
@@ -20,6 +29,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, href: '/' },
   { label: 'Consultas', icon: Search, href: '/consultas' },
+  { label: 'Vounchers', icon: Ticket, href: '/vounchers' },
   { label: 'Usuários', icon: Users, href: '/usuarios' },
 ]
 

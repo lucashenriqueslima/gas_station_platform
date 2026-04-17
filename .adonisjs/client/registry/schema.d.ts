@@ -31,6 +31,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/consultantions_controller').default['update']>>>
     }
   }
+  'vounchers.validate': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/gas-station-app/vouncher/:code/validate'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { code: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/vounchers_controller').default['validate']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/vounchers_controller').default['validate']>>>
+    }
+  }
+  'vouncher_utilizations.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/gas-station-app/vouncher/:code/utilizations'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { code: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/vouncher_utilizations_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/vouncher_utilizations_controller').default['store']>>>
+    }
+  }
   'home': {
     methods: ["GET","HEAD"]
     pattern: '/'
@@ -89,6 +113,18 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['store']>>>
+    }
+  }
+  'client.vouncher.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/cliente/vouncher/:code'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { code: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['clientShow']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['clientShow']>>>
     }
   }
   'session.destroy': {
@@ -161,6 +197,54 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/consultations_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/consultations_controller').default['show']>>>
+    }
+  }
+  'vounchers.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/vounchers'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['index']>>>
+    }
+  }
+  'vounchers.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/vounchers/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['create']>>>
+    }
+  }
+  'vounchers.store': {
+    methods: ["POST"]
+    pattern: '/vounchers'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/vouncher').storeVouncher)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/vouncher').storeVouncher)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'vounchers.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/vounchers/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/vounchers_controller').default['show']>>>
     }
   }
 }

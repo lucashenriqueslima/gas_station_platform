@@ -52,6 +52,7 @@
     "@tailwindcss/vite": "^4.2.1",
     "@types/luxon": "^3.7.1",
     "@types/node": "~25.5.0",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.4",
@@ -95,11 +96,13 @@
     "lucide-react": "^0.577.0",
     "luxon": "^3.7.2",
     "mysql2": "^3.19.0",
+    "qrcode": "^1.5.4",
     "radix-ui": "^1.4.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "reflect-metadata": "^0.2.2",
     "sonner": "^2.0.7",
+    "sqids": "^0.3.0",
     "tailwind-merge": "^3.5.0"
   },
   "hotHook": {

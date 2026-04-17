@@ -32,6 +32,8 @@ router
   })
   .use(middleware.guest())
 
+router.get('cliente/vouncher/:code', [controllers.Vounchers, 'clientShow']).as('client.vouncher.show')
+
 router
   .group(() => {
     router.post('logout', [controllers.Session, 'destroy']).as('session.destroy')
@@ -40,5 +42,9 @@ router
       .resource('consultas', controllers.Consultations)
       .as('consultations')
       .only(['index', 'show'])
+    router
+      .resource('vounchers', controllers.Vounchers)
+      .as('vounchers')
+      .only(['index', 'create', 'store', 'show'])
   })
   .use(middleware.auth())

@@ -28,8 +28,8 @@ export class ConsultationSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare vehicleSituation: string
-  @column()
-  declare wasRefueled: boolean
+  @column({ consume: (value) => (value === null ? null : Boolean(value)) })
+  declare wasRefueled: boolean | null
 }
 
 export class UserSchema extends BaseModel {
@@ -45,6 +45,60 @@ export class UserSchema extends BaseModel {
   declare id: number
   @column({ serializeAs: null })
   declare password: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class VouncherUtilizationSchema extends BaseModel {
+  static $columns = ['cpf', 'createdAt', 'id', 'licensePlate', 'name', 'phone', 'updatedAt', 'vouncherId'] as const
+  $columns = VouncherUtilizationSchema.$columns
+  @column()
+  declare cpf: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare licensePlate: string
+  @column()
+  declare name: string
+  @column()
+  declare phone: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare vouncherId: number
+}
+
+export class VouncherSchema extends BaseModel {
+  static $columns = ['code', 'createdAt', 'createdBy', 'currentUtilizations', 'dieselPrice', 'ethanolPrice', 'expiresAt', 'gasolinePrice', 'id', 'isActive', 'maxUtilizations', 'partner', 'type', 'updatedAt'] as const
+  $columns = VouncherSchema.$columns
+  @column()
+  declare code: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare createdBy: number | null
+  @column()
+  declare currentUtilizations: number
+  @column({ consume: (value) => (value === null ? null : Number(value)) })
+  declare dieselPrice: number
+  @column({ consume: (value) => (value === null ? null : Number(value)) })
+  declare ethanolPrice: number
+  @column.dateTime()
+  declare expiresAt: DateTime
+  @column({ consume: (value) => (value === null ? null : Number(value)) })
+  declare gasolinePrice: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column({ consume: (value) => (value === null ? null : Boolean(value)) })
+  declare isActive: boolean
+  @column()
+  declare maxUtilizations: number
+  @column()
+  declare partner: string | null
+  @column()
+  declare type: 'operational' | 'commercial' | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
