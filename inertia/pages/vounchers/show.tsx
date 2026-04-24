@@ -15,7 +15,14 @@ import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import CopyButton from '~/components/copy_button'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '~/components/ui/table'
 import { InertiaProps } from '~/types'
 
 type UtilizationRow = {
@@ -40,7 +47,7 @@ type VouncherDetails = {
   gasolinePrice: string
   dieselPrice: string
   createdBy: string
-  isActive: boolean
+  isValid: boolean
   expiresAt: string
   createdAt: string
   updatedAt: string
@@ -85,8 +92,8 @@ export default function VounchersShow({ vouncher }: Props) {
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="outline">Vouncher #{vouncher.id}</Badge>
-            <Badge variant={vouncher.isActive ? 'success' : 'secondary'}>
-              {vouncher.isActive ? 'Ativo' : 'Inativo'}
+            <Badge variant={vouncher.isValid ? 'success' : 'secondary'}>
+              {vouncher.isValid ? 'Ativo' : 'Inativo'}
             </Badge>
           </div>
           <h2 className="text-2xl font-semibold tracking-tight">{vouncher.code}</h2>
@@ -115,7 +122,10 @@ export default function VounchersShow({ vouncher }: Props) {
         />
         <DetailItem label="Tipo" value={vouncher.typeLabel} />
         <DetailItem label="Parceiro" value={vouncher.partnerLabel} />
-        <DetailItem label="Utilizações" value={`${vouncher.currentUtilizations}/${vouncher.maxUtilizations}`} />
+        <DetailItem
+          label="Utilizações"
+          value={`${vouncher.currentUtilizations}/${vouncher.maxUtilizations}`}
+        />
         <DetailItem label="Preço etanol" value={vouncher.ethanolPrice} />
         <DetailItem label="Preço gasolina" value={vouncher.gasolinePrice} />
         <DetailItem label="Preço diesel" value={vouncher.dieselPrice} />
@@ -201,9 +211,7 @@ export default function VounchersShow({ vouncher }: Props) {
               <ScanLine className="h-5 w-5" />
               Utilizações do vouncher
             </CardTitle>
-            <CardDescription>
-              Histórico completo de quem utilizou este vouncher.
-            </CardDescription>
+            <CardDescription>Histórico completo de quem utilizou este vouncher.</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>

@@ -218,6 +218,10 @@ export default function ClientVouncherShow({ vouncher }: Props) {
                 prosseguir, confira se o parceiro, a validade e os preços estão de acordo com a sua
                 operação.
               </div>
+
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-medium leading-6 text-amber-900">
+                Observação: este voucher aceita pagamento somente via pix ou dinheiro.
+              </div>
             </CardContent>
           </Card>
 

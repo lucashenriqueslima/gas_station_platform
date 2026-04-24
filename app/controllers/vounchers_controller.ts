@@ -76,7 +76,7 @@ export default class VounchersController {
         gasolinePrice: this.formatPrice(vouncher.gasolinePrice),
         dieselPrice: this.formatPrice(vouncher.dieselPrice),
         createdBy: vouncher.creator?.fullName ?? vouncher.creator?.email ?? '-',
-        isActive: vouncher.isActive,
+        isValid: vouncher.isValid,
         expiresAt: vouncher.expiresAt.toFormat('dd/MM/yyyy HH:mm'),
         createdAt: vouncher.createdAt?.toFormat('dd/MM/yyyy HH:mm') ?? '-',
         updatedAt: vouncher.updatedAt?.toFormat('dd/MM/yyyy HH:mm') ?? '-',

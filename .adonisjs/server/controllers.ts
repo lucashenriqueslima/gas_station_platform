@@ -8,8 +8,8 @@ export const controllers = {
     v1: {
       gasStationApp: {
         Consultantions: () => import('#controllers/api/v_1/gas_station_app/consultantions_controller'),
-        Vounchers: () => import('#controllers/api/v_1/gas_station_app/vounchers_controller'),
         VouncherUtilizations: () => import('#controllers/api/v_1/gas_station_app/vouncher_utilizations_controller'),
+        Vounchers: () => import('#controllers/api/v_1/gas_station_app/vounchers_controller'),
       },
     },
   },

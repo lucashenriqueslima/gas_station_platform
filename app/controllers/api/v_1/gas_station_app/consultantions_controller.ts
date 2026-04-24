@@ -7,6 +7,19 @@ export default class ConsultantionsController {
   async store({ request, response }: HttpContext) {
     const { ilevaVehicleId, licensePlate, partner, vehicleSituation, consultedBy } = request.all()
 
+    if (consultedBy == 'vouncher') {
+      const alreadyUsedVouncher = await Consultation.query()
+        .where('licensePlate', licensePlate)
+        .where('consultedBy', consultedBy)
+        .first()
+
+      if (alreadyUsedVouncher) {
+        return response.status(400).json({
+          message: 'Este veiculo ja utilizou um vouncher',
+        })
+      }
+    }
+
     const consultation = await Consultation.create({
       ilevaVehicleId,
       licensePlate,
