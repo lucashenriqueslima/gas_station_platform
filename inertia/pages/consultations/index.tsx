@@ -26,6 +26,7 @@ type ConsultationRow = {
   licensePlate: string
   partner: string | null
   partnerLabel: string | null
+  gasStationName: string | null
   vehicleSituation: string
   wasRefueled: boolean
   consultedBy: string
@@ -61,6 +62,12 @@ const columns: ColumnDef<ConsultationRow>[] = [
     accessorKey: 'partnerLabel',
     header: 'Parceiro',
     enableSorting: true,
+  },
+  {
+    accessorKey: 'gasStationName',
+    header: 'Posto',
+    enableSorting: false,
+    cell: ({ row }) => row.original.gasStationName ?? 'Nao informado',
   },
   {
     accessorKey: 'consultedByLabel',

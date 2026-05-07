@@ -13,6 +13,7 @@ type ConsultationDetails = {
   licensePlate: string
   partner: string | null
   partnerLabel: string | null
+  gasStationName: string | null
   vehicleSituation: string
   wasRefueled: boolean
   consultedBy: string
@@ -87,6 +88,7 @@ export default function ConsultationsShow({ consultation }: Props) {
           label="Parceiro"
           value={consultation.partnerLabel || consultation.partner || 'Nao informado'}
         />
+        <DetailItem label="Posto" value={consultation.gasStationName ?? 'Nao informado'} />
         <DetailItem
           label="Consultado por"
           value={

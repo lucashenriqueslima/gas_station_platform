@@ -8,6 +8,13 @@ export const controllers = {
     v1: {
       gasStationApp: {
         Consultantions: () => import('#controllers/api/v_1/gas_station_app/consultantions_controller'),
+        GasStations: () => import('#controllers/api/v_1/gas_station_app/gas_stations_controller'),
+        ileva: {
+          AssociateCharges: () => import('#controllers/api/v_1/gas_station_app/ileva/associate_charges_controller'),
+          Associates: () => import('#controllers/api/v_1/gas_station_app/ileva/associates_controller'),
+          Vehicles: () => import('#controllers/api/v_1/gas_station_app/ileva/vehicles_controller'),
+        },
+        PlateRecognizer: () => import('#controllers/api/v_1/gas_station_app/plate_recognizer_controller'),
         VouncherUtilizations: () => import('#controllers/api/v_1/gas_station_app/vouncher_utilizations_controller'),
         Vounchers: () => import('#controllers/api/v_1/gas_station_app/vounchers_controller'),
       },

@@ -41,5 +41,14 @@ export default await Env.create(new URL('../', import.meta.url), {
   AWS_ACCESS_KEY_ID: Env.schema.string(),
   AWS_SECRET_ACCESS_KEY: Env.schema.string(),
   AWS_REGION: Env.schema.string(),
-  S3_BUCKET: Env.schema.string()
+  S3_BUCKET: Env.schema.string(),
+
+  // External integrations
+  ILEVA_BASE_URL: Env.schema.string({ format: 'url', tld: false }),
+  ILEVA_USERNAME: Env.schema.secret(),
+  ILEVA_PASSWORD: Env.schema.secret(),
+  ILEVA_SOLIDY_APP_KEY: Env.schema.secret(),
+  ILEVA_MOTOCLUB_APP_KEY: Env.schema.secret(),
+  PLATE_RECOGNIZER_BASE_URL: Env.schema.string({ format: 'url', tld: false }),
+  PLATE_RECOGNIZER_TOKEN: Env.schema.secret(),
 })

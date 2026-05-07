@@ -8,7 +8,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class ConsultationSchema extends BaseModel {
-  static $columns = ['consultedBy', 'createdAt', 'fuelPumpVisorImage', 'id', 'ilevaVehicleId', 'licensePlate', 'partner', 'updatedAt', 'vehicleSituation', 'wasRefueled'] as const
+  static $columns = ['consultedBy', 'createdAt', 'fuelPumpVisorImage', 'gasStationId', 'id', 'ilevaVehicleId', 'licensePlate', 'partner', 'updatedAt', 'vehicleSituation', 'wasRefueled'] as const
   $columns = ConsultationSchema.$columns
   @column()
   declare consultedBy: string
@@ -16,6 +16,8 @@ export class ConsultationSchema extends BaseModel {
   declare createdAt: DateTime
   @column()
   declare fuelPumpVisorImage: string | null
+  @column()
+  declare gasStationId: number | null
   @column({ isPrimary: true })
   declare id: number
   @column()
@@ -30,6 +32,19 @@ export class ConsultationSchema extends BaseModel {
   declare vehicleSituation: string
   @column({ consume: (value) => (value === null ? null : Boolean(value)) })
   declare wasRefueled: boolean | null
+}
+
+export class GasStationSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'name', 'updatedAt'] as const
+  $columns = GasStationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
 }
 
 export class UserSchema extends BaseModel {

@@ -7,6 +7,18 @@ import type { InferInput, SimpleError } from '@vinejs/vine/types'
 export type ParamValue = string | number | bigint | boolean
 
 export interface Registry {
+  'gas_stations.get': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/gas-station-app/gas-station'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/gas_stations_controller').default['get']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/gas_stations_controller').default['get']>>>
+    }
+  }
   'consultantions.store': {
     methods: ["POST"]
     pattern: '/api/v1/gas-station-app/consultations'
@@ -53,6 +65,54 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/vouncher_utilizations_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/vouncher_utilizations_controller').default['store']>>>
+    }
+  }
+  'plate_recognizer.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/gas-station-app/plate-recognizer'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/plate_recognizer_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/plate_recognizer_controller').default['store']>>>
+    }
+  }
+  'ileva_vehicles.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/gas-station-app/ileva/vehicle/:licensePlate'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { licensePlate: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/vehicles_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/vehicles_controller').default['show']>>>
+    }
+  }
+  'ileva_associates.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/gas-station-app/ileva/associate/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associates_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associates_controller').default['show']>>>
+    }
+  }
+  'ileva_associate_charges.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/gas-station-app/ileva/associate/:id/charges'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associate_charges_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associate_charges_controller').default['index']>>>
     }
   }
   'home': {

@@ -1,6 +1,7 @@
 import { ConsultationSchema } from '#database/schema'
-// import { BaseModel, column } from '@adonisjs/lucid/orm'
-// import { DateTime } from 'luxon'
+import GasStation from '#models/gas_station'
+import { belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 
 export const Partner = {
   solidy: 'solidy',
@@ -17,6 +18,14 @@ export type Partner = (typeof Partner)[keyof typeof Partner]
 export type ConsultedBy = (typeof ConsultedBy)[keyof typeof ConsultedBy]
 
 export default class Consultation extends ConsultationSchema {
+  @column({ columnName: 'gas_station_id' })
+  declare gasStationId: number | null
+
+  @belongsTo(() => GasStation, {
+    foreignKey: 'gasStationId',
+  })
+  declare gasStation: BelongsTo<typeof GasStation>
+
   get formattedCreatedAt() {
     return this.createdAt.toFormat('dd/MM/yyyy HH:mm')
   }

@@ -6,6 +6,12 @@ import type { ApiDefinition } from './tree.d.ts'
 const placeholder: any = {}
 
 const routes = {
+  'gas_stations.get': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/gas-station-app/gas-station',
+    tokens: [{"old":"/api/v1/gas-station-app/gas-station","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/gas-station","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/gas-station","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/gas-station","type":0,"val":"gas-station","end":""}],
+    types: placeholder as Registry['gas_stations.get']['types'],
+  },
   'consultantions.store': {
     methods: ["POST"],
     pattern: '/api/v1/gas-station-app/consultations',
@@ -29,6 +35,30 @@ const routes = {
     pattern: '/api/v1/gas-station-app/vouncher/:code/utilizations',
     tokens: [{"old":"/api/v1/gas-station-app/vouncher/:code/utilizations","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/vouncher/:code/utilizations","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/vouncher/:code/utilizations","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/vouncher/:code/utilizations","type":0,"val":"vouncher","end":""},{"old":"/api/v1/gas-station-app/vouncher/:code/utilizations","type":1,"val":"code","end":""},{"old":"/api/v1/gas-station-app/vouncher/:code/utilizations","type":0,"val":"utilizations","end":""}],
     types: placeholder as Registry['vouncher_utilizations.store']['types'],
+  },
+  'plate_recognizer.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/gas-station-app/plate-recognizer',
+    tokens: [{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"plate-recognizer","end":""}],
+    types: placeholder as Registry['plate_recognizer.store']['types'],
+  },
+  'ileva_vehicles.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/gas-station-app/ileva/vehicle/:licensePlate',
+    tokens: [{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"ileva","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"vehicle","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":1,"val":"licensePlate","end":""}],
+    types: placeholder as Registry['ileva_vehicles.show']['types'],
+  },
+  'ileva_associates.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/gas-station-app/ileva/associate/:id',
+    tokens: [{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"ileva","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"associate","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['ileva_associates.show']['types'],
+  },
+  'ileva_associate_charges.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/gas-station-app/ileva/associate/:id/charges',
+    tokens: [{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"ileva","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"associate","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":1,"val":"id","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"charges","end":""}],
+    types: placeholder as Registry['ileva_associate_charges.index']['types'],
   },
   'home': {
     methods: ["GET","HEAD"],

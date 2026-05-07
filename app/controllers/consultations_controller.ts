@@ -18,6 +18,7 @@ export default class ConsultationsController {
 
     const consultations = await table.paginate(
       Consultation.query()
+        .preload('gasStation')
         .if(table.search, (query) => {
           query
             .whereILike('license_plate', `%${table.search}%`)
@@ -77,7 +78,7 @@ export default class ConsultationsController {
   }
 
   async show({ params, inertia }: HttpContext) {
-    const consultation = await Consultation.findOrFail(params.id)
+    const consultation = await Consultation.query().where('id', params.id).preload('gasStation').firstOrFail()
 
     return inertia.render('consultations/show', {
       consultation: this.serializeConsultation(consultation),
@@ -91,6 +92,7 @@ export default class ConsultationsController {
       licensePlate: consultation.licensePlate,
       partner: consultation.partner,
       partnerLabel: consultation.partnerLabel,
+      gasStationName: consultation.gasStation?.name ?? null,
       vehicleSituation: consultation.vehicleSituation,
       wasRefueled: Boolean(consultation.wasRefueled),
       consultedBy: consultation.consultedBy,

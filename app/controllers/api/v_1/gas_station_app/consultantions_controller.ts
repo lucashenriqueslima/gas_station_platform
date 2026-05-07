@@ -5,7 +5,15 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ConsultantionsController {
   async store({ request, response }: HttpContext) {
-    const { ilevaVehicleId, licensePlate, partner, vehicleSituation, consultedBy } = request.all()
+    const {
+      ilevaVehicleId,
+      licensePlate,
+      partner,
+      vehicleSituation,
+      consultedBy,
+      gas_station,
+      gasStationId,
+    } = request.all()
 
     if (consultedBy == 'vouncher') {
       const alreadyUsedVouncher = await Consultation.query()
@@ -26,6 +34,7 @@ export default class ConsultantionsController {
       partner,
       vehicleSituation,
       consultedBy,
+      gasStationId: gas_station ?? gasStationId ?? null,
       wasRefueled: false,
       fuelPumpVisorImage: null,
     })
