@@ -33,6 +33,19 @@ validate_build_artifacts() {
   fi
 }
 
+sync_public_assets() {
+  local build_assets_dir="$BUILD_DIR/public/assets"
+  local public_assets_dir="$PROJECT_ROOT/public/assets"
+
+  if [ ! -d "$build_assets_dir" ]; then
+    echo "Missing built assets directory at $build_assets_dir"
+    exit 1
+  fi
+
+  rm -rf "$public_assets_dir"
+  cp -R "$build_assets_dir" "$public_assets_dir"
+}
+
 cd "$PROJECT_ROOT"
 
 npm install
@@ -51,4 +64,5 @@ fi
 
 cd "$PROJECT_ROOT"
 validate_build_artifacts
+sync_public_assets
 reload_or_start_app "$APP_NAME"
