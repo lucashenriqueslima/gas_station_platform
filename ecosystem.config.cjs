@@ -1,8 +1,13 @@
+const path = require('node:path')
+
+const projectRoot = __dirname
+const logsDir = path.join(projectRoot, 'logs')
+
 module.exports = {
   apps: [
     {
       name: 'gas_station_platform',
-      cwd: '/var/www/gas_station_platform/build',
+      cwd: path.join(projectRoot, 'build'),
       script: './bin/server.js',
       instances: 1,
       exec_mode: 'fork',
@@ -11,8 +16,8 @@ module.exports = {
         NODE_ENV: 'production',
         PORT: 3333,
       },
-      error_file: '/var/www/gas_station_platform/logs/err.log',
-      out_file: '/var/www/gas_station_platform/logs/out.log',
+      error_file: path.join(logsDir, 'err.log'),
+      out_file: path.join(logsDir, 'out.log'),
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
     },
   ],

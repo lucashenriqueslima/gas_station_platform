@@ -17,7 +17,7 @@ import type {
   IlevaVehicleSearchParams,
 } from './types.js'
 
-const PARTNERS: IlevaPartner[] = ['solidy', 'motoclub']
+const PARTNERS: IlevaPartner[] = ['motoclub', 'solidy']
 
 class IlevaClient {
   private tokenCache = new Map<IlevaPartner, IlevaToken>()

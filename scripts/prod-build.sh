@@ -11,7 +11,7 @@ reload_or_start_app() {
   local app_name="$1"
 
   if pm2 describe "$app_name" >/dev/null 2>&1; then
-    pm2 reload "$app_name" --update-env
+    pm2 reload "$PM2_CONFIG" --only "$app_name" --update-env
     return
   fi
 
@@ -65,4 +65,5 @@ fi
 cd "$PROJECT_ROOT"
 validate_build_artifacts
 sync_public_assets
+mkdir -p "$PROJECT_ROOT/logs"
 reload_or_start_app "$APP_NAME"
