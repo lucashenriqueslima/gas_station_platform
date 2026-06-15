@@ -21,6 +21,11 @@ yarn-error.log
 .fleet
 .idea
 .vscode
+!.vscode/
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/settings.json
+!.vscode/extensions.json
 
 # Platform specific
 .DS_Store

@@ -13,8 +13,8 @@ export default class SessionController {
 
       await auth.use('web').login(user)
       response.redirect().toRoute('home')
-    } catch {
-      session.flash({ error: 'Usuário ou senha inválidos' })
+    } catch (error) {
+      session.flash({ error: error instanceof Error ? error.message : 'Não foi possível entrar.' })
       return response.redirect().back()
     }
   }

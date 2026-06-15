@@ -6,6 +6,12 @@ import type { ApiDefinition } from './tree.d.ts'
 const placeholder: any = {}
 
 const routes = {
+  'access_tokens.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/gas-station-app/access-tokens',
+    tokens: [{"old":"/api/v1/gas-station-app/access-tokens","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/access-tokens","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/access-tokens","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/access-tokens","type":0,"val":"access-tokens","end":""}],
+    types: placeholder as Registry['access_tokens.store']['types'],
+  },
   'gas_stations.get': {
     methods: ["GET","HEAD"],
     pattern: '/api/v1/gas-station-app/gas-station',
@@ -42,23 +48,23 @@ const routes = {
     tokens: [{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"plate-recognizer","end":""}],
     types: placeholder as Registry['plate_recognizer.store']['types'],
   },
-  'ileva_vehicles.show': {
+  'associates.show': {
     methods: ["GET","HEAD"],
     pattern: '/api/v1/gas-station-app/ileva/vehicle/:licensePlate',
     tokens: [{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"ileva","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"vehicle","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":1,"val":"licensePlate","end":""}],
-    types: placeholder as Registry['ileva_vehicles.show']['types'],
+    types: placeholder as Registry['associates.show']['types'],
   },
-  'ileva_associates.show': {
+  'ileva.associate.show': {
     methods: ["GET","HEAD"],
     pattern: '/api/v1/gas-station-app/ileva/associate/:id',
     tokens: [{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"ileva","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":0,"val":"associate","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['ileva_associates.show']['types'],
+    types: placeholder as Registry['ileva.associate.show']['types'],
   },
-  'ileva_associate_charges.index': {
+  'ileva.associate.charges.index': {
     methods: ["GET","HEAD"],
     pattern: '/api/v1/gas-station-app/ileva/associate/:id/charges',
     tokens: [{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"ileva","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"associate","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":1,"val":"id","end":""},{"old":"/api/v1/gas-station-app/ileva/associate/:id/charges","type":0,"val":"charges","end":""}],
-    types: placeholder as Registry['ileva_associate_charges.index']['types'],
+    types: placeholder as Registry['ileva.associate.charges.index']['types'],
   },
   'home': {
     methods: ["GET","HEAD"],
@@ -119,6 +125,24 @@ const routes = {
     pattern: '/usuarios',
     tokens: [{"old":"/usuarios","type":0,"val":"usuarios","end":""}],
     types: placeholder as Registry['users.store']['types'],
+  },
+  'users.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/usuarios/:id',
+    tokens: [{"old":"/usuarios/:id","type":0,"val":"usuarios","end":""},{"old":"/usuarios/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['users.show']['types'],
+  },
+  'users.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/usuarios/:id/edit',
+    tokens: [{"old":"/usuarios/:id/edit","type":0,"val":"usuarios","end":""},{"old":"/usuarios/:id/edit","type":1,"val":"id","end":""},{"old":"/usuarios/:id/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['users.edit']['types'],
+  },
+  'users.update': {
+    methods: ["PUT","PATCH"],
+    pattern: '/usuarios/:id',
+    tokens: [{"old":"/usuarios/:id","type":0,"val":"usuarios","end":""},{"old":"/usuarios/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['users.update']['types'],
   },
   'consultations.index': {
     methods: ["GET","HEAD"],

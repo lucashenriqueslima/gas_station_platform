@@ -1,0 +1,72 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "adonis: dev",
+      "type": "npm",
+      "script": "dev",
+      "path": ".",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "adonis: debug",
+      "type": "npm",
+      "script": "debug",
+      "path": ".",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "adonis: debug break",
+      "type": "npm",
+      "script": "debug:brk",
+      "path": ".",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "adonis: test",
+      "type": "npm",
+      "script": "test",
+      "path": ".",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "adonis: typecheck",
+      "type": "npm",
+      "script": "typecheck",
+      "path": ".",
+      "group": "build",
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "docker: mysql up",
+      "type": "shell",
+      "command": "docker compose up -d mysql",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "docker: mysql down",
+      "type": "shell",
+      "command": "docker compose down",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "db: migrate",
+      "type": "shell",
+      "command": "node ace migration:run",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

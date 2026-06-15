@@ -2,6 +2,9 @@
 import type { routes } from './index.ts'
 
 export interface ApiDefinition {
+  accessTokens: {
+    store: typeof routes['access_tokens.store']
+  }
   gasStations: {
     get: typeof routes['gas_stations.get']
   }
@@ -22,14 +25,16 @@ export interface ApiDefinition {
   plateRecognizer: {
     store: typeof routes['plate_recognizer.store']
   }
-  ilevaVehicles: {
-    show: typeof routes['ileva_vehicles.show']
+  associates: {
+    show: typeof routes['associates.show']
   }
-  ilevaAssociates: {
-    show: typeof routes['ileva_associates.show']
-  }
-  ilevaAssociateCharges: {
-    index: typeof routes['ileva_associate_charges.index']
+  ileva: {
+    associate: {
+      show: typeof routes['ileva.associate.show']
+      charges: {
+        index: typeof routes['ileva.associate.charges.index']
+      }
+    }
   }
   home: typeof routes['home']
   newAccount: {
@@ -50,6 +55,9 @@ export interface ApiDefinition {
     index: typeof routes['users.index']
     create: typeof routes['users.create']
     store: typeof routes['users.store']
+    show: typeof routes['users.show']
+    edit: typeof routes['users.edit']
+    update: typeof routes['users.update']
   }
   consultations: {
     index: typeof routes['consultations.index']

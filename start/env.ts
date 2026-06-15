@@ -51,4 +51,10 @@ export default await Env.create(new URL('../', import.meta.url), {
   ILEVA_MOTOCLUB_APP_KEY: Env.schema.secret(),
   PLATE_RECOGNIZER_BASE_URL: Env.schema.string({ format: 'url', tld: false }),
   PLATE_RECOGNIZER_TOKEN: Env.schema.secret(),
+
+  // Face recognition
+  FACE_RECOGNITION_MODELS_PATH: Env.schema.string.optional(),
+  FACE_RECOGNITION_MIN_CONFIDENCE: Env.schema.number.optional(),
+  FACE_RECOGNITION_MATCH_THRESHOLD: Env.schema.number.optional(),
+  FACE_RECOGNITION_MAX_IMAGES_PER_USER: Env.schema.number.optional(),
 })

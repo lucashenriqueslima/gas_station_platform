@@ -9,6 +9,7 @@ type Props = {
   size?: 'default' | 'sm' | 'lg' | 'icon'
   variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link' | 'destructive' | 'success'
   className?: string
+  disabled?: boolean
   onClick?: () => Promise<void>
 }
 
@@ -19,6 +20,7 @@ export function ButtonWithLoader({
   size,
   variant,
   className,
+  disabled,
   onClick,
 }: Props) {
   const [loading, setLoading] = useState(isLoading)
@@ -28,7 +30,7 @@ export function ButtonWithLoader({
   }, [isLoading])
 
   const handleClick = async () => {
-    if (loading) return
+    if (loading || disabled) return
 
     try {
       setLoading(true)
@@ -43,7 +45,7 @@ export function ButtonWithLoader({
   return (
     <Button
       type={type}
-      disabled={loading}
+      disabled={loading || disabled}
       size={size}
       variant={variant}
       className={className}

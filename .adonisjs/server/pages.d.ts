@@ -20,8 +20,12 @@ declare module '@adonisjs/inertia/types' {
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
+    'users/components/user_form_contract': ExtractProps<(typeof import('../../inertia/pages/users/components/user_form_contract.ts'))['default']>
+    'users/components/user_form': ExtractProps<(typeof import('../../inertia/pages/users/components/user_form.tsx'))['default']>
     'users/create': ExtractProps<(typeof import('../../inertia/pages/users/create.tsx'))['default']>
+    'users/edit': ExtractProps<(typeof import('../../inertia/pages/users/edit.tsx'))['default']>
     'users/index': ExtractProps<(typeof import('../../inertia/pages/users/index.tsx'))['default']>
+    'users/show': ExtractProps<(typeof import('../../inertia/pages/users/show.tsx'))['default']>
     'vounchers/create': ExtractProps<(typeof import('../../inertia/pages/vounchers/create.tsx'))['default']>
     'vounchers/index': ExtractProps<(typeof import('../../inertia/pages/vounchers/index.tsx'))['default']>
     'vounchers/show': ExtractProps<(typeof import('../../inertia/pages/vounchers/show.tsx'))['default']>

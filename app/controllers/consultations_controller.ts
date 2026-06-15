@@ -1,10 +1,13 @@
 import Consultation from '#models/consultation'
+import ConsultationPolicy from '#policies/consultation_policy'
 import type { HttpContext } from '@adonisjs/core/http'
 import TableFilter from '../helpers/table_filter.js'
 import { DateTime } from 'luxon'
 
 export default class ConsultationsController {
-  async index({ request, inertia }: HttpContext) {
+  async index({ request, inertia, bouncer }: HttpContext) {
+    await bouncer.with(ConsultationPolicy).authorize('viewList')
+
     const table = new TableFilter(request, {
       defaultSort: 'created_at',
       defaultOrder: 'desc',
@@ -77,8 +80,13 @@ export default class ConsultationsController {
     })
   }
 
-  async show({ params, inertia }: HttpContext) {
-    const consultation = await Consultation.query().where('id', params.id).preload('gasStation').firstOrFail()
+  async show({ params, inertia, bouncer }: HttpContext) {
+    const consultation = await Consultation.query()
+      .where('id', params.id)
+      .preload('gasStation')
+      .firstOrFail()
+
+    await bouncer.with(ConsultationPolicy).authorize('view', consultation)
 
     return inertia.render('consultations/show', {
       consultation: this.serializeConsultation(consultation),

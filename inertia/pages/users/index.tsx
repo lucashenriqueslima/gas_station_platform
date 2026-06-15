@@ -1,12 +1,18 @@
 import { type ReactNode } from 'react'
 import { type ColumnDef } from '@tanstack/react-table'
 import { Link } from '@adonisjs/inertia/react'
-import { Plus } from 'lucide-react'
+import { Edit, Eye, MoreHorizontal, Plus } from 'lucide-react'
 import { Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import { InertiaProps } from '~/types'
 import { DataTable, type DataTableFilters, type PaginationMeta } from '~/components/ui/data-table'
 import { Button } from '~/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu'
 
 type Props = InertiaProps<{
   data: Data.User.Variants['toIndexView'][]
@@ -26,9 +32,46 @@ const columns: ColumnDef<Data.User.Variants['toIndexView']>[] = [
     enableSorting: true,
   },
   {
+    accessorKey: 'roleLabel',
+    header: 'Perfil',
+    enableSorting: true,
+    cell: ({ row }) => row.original.roleLabel ?? 'Desconhecido',
+  },
+  {
     accessorKey: 'formattedCreatedAt',
     header: 'Cadastrado em',
     enableSorting: true,
+  },
+  {
+    id: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Abrir ações do usuário ${row.original.id}`}
+          >
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            <Link href={`/usuarios/${row.original.id}`}>
+              <Eye className="h-4 w-4" />
+              Ver mais
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/usuarios/${row.original.id}/edit`}>
+              <Edit className="h-4 w-4" />
+              Editar
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ]
 

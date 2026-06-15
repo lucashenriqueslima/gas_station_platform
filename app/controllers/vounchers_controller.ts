@@ -1,5 +1,6 @@
 import { appUrl } from '#config/app'
 import Vouncher from '#models/vouncher'
+import VouncherPolicy from '#policies/vouncher_policy'
 import { storeVouncher } from '#validators/vouncher'
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
@@ -11,11 +12,15 @@ const sqids = new Sqids({
 })
 
 export default class VounchersController {
-  async create({ inertia }: HttpContext) {
+  async create({ inertia, bouncer }: HttpContext) {
+    await bouncer.with(VouncherPolicy).authorize('create')
+
     return inertia.render('vounchers/create', {})
   }
 
-  async index({ request, inertia }: HttpContext) {
+  async index({ request, inertia, bouncer }: HttpContext) {
+    await bouncer.with(VouncherPolicy).authorize('viewList')
+
     const table = new TableFilter(request, {
       defaultSort: 'created_at',
       defaultOrder: 'desc',
@@ -53,12 +58,14 @@ export default class VounchersController {
     })
   }
 
-  async show({ params, inertia }: HttpContext) {
+  async show({ params, inertia, bouncer }: HttpContext) {
     const vouncher = await Vouncher.query()
       .where('id', params.id)
       .preload('creator')
       .preload('utilizations', (query) => query.orderBy('created_at', 'desc'))
       .firstOrFail()
+
+    await bouncer.with(VouncherPolicy).authorize('view', vouncher)
 
     const publicUrl = `${appUrl}/cliente/vouncher/${vouncher.code}`
 
@@ -117,7 +124,9 @@ export default class VounchersController {
     })
   }
 
-  async store({ request, response, session, auth }: HttpContext) {
+  async store({ request, response, session, auth, bouncer }: HttpContext) {
+    await bouncer.with(VouncherPolicy).authorize('create')
+
     const payload = await request.validateUsing(storeVouncher)
 
     const vouncher = await Vouncher.create({

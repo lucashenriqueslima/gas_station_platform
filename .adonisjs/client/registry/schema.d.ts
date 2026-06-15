@@ -7,6 +7,18 @@ import type { InferInput, SimpleError } from '@vinejs/vine/types'
 export type ParamValue = string | number | bigint | boolean
 
 export interface Registry {
+  'access_tokens.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/gas-station-app/access-tokens'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/access_tokens_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/access_tokens_controller').default['store']>>>
+    }
+  }
   'gas_stations.get': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/gas-station-app/gas-station'
@@ -79,7 +91,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/plate_recognizer_controller').default['store']>>>
     }
   }
-  'ileva_vehicles.show': {
+  'associates.show': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/gas-station-app/ileva/vehicle/:licensePlate'
     types: {
@@ -87,11 +99,11 @@ export interface Registry {
       paramsTuple: [ParamValue]
       params: { licensePlate: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/vehicles_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/vehicles_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associates_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associates_controller').default['show']>>>
     }
   }
-  'ileva_associates.show': {
+  'ileva.associate.show': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/gas-station-app/ileva/associate/:id'
     types: {
@@ -103,7 +115,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associates_controller').default['show']>>>
     }
   }
-  'ileva_associate_charges.index': {
+  'ileva.associate.charges.index': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/gas-station-app/ileva/associate/:id/charges'
     types: {
@@ -233,6 +245,42 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/user').storeUser)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/users_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/users_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'users.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/usuarios/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/users_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/users_controller').default['show']>>>
+    }
+  }
+  'users.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/usuarios/:id/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/users_controller').default['edit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/users_controller').default['edit']>>>
+    }
+  }
+  'users.update': {
+    methods: ["PUT","PATCH"]
+    pattern: '/usuarios/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/user').updateUser)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').updateUser)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/users_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/users_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'consultations.index': {

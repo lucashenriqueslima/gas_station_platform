@@ -7,6 +7,7 @@ export const controllers = {
   api: {
     v1: {
       gasStationApp: {
+        AccessTokens: () => import('#controllers/api/v_1/gas_station_app/access_tokens_controller'),
         Consultantions: () => import('#controllers/api/v_1/gas_station_app/consultantions_controller'),
         GasStations: () => import('#controllers/api/v_1/gas_station_app/gas_stations_controller'),
         ileva: {

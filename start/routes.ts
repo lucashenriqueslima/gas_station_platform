@@ -32,12 +32,17 @@ router
   })
   .use(middleware.guest())
 
-router.get('cliente/vouncher/:code', [controllers.Vounchers, 'clientShow']).as('client.vouncher.show')
+router
+  .get('cliente/vouncher/:code', [controllers.Vounchers, 'clientShow'])
+  .as('client.vouncher.show')
 
 router
   .group(() => {
     router.post('logout', [controllers.Session, 'destroy']).as('session.destroy')
-    router.resource('usuarios', controllers.Users).as('users').only(['index', 'create', 'store'])
+    router
+      .resource('usuarios', controllers.Users)
+      .as('users')
+      .only(['index', 'show', 'create', 'store', 'edit', 'update'])
     router
       .resource('consultas', controllers.Consultations)
       .as('consultations')

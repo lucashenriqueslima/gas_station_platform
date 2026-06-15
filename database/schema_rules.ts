@@ -14,6 +14,13 @@ export default {
     },
   },
   tables: {
+    users: {
+      columns: {
+        role: {
+          tsType: `'attendant' | 'manager' | 'admin'`,
+        },
+      },
+    },
     vounchers: {
       columns: {
         type: {
