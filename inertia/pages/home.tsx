@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/react'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { ReactNode, type MouseEvent, useEffect, useMemo, useState } from 'react'
 import CountUp from 'react-countup'
-import { CalendarDays, Filter, Fuel, RotateCcw, Search, Users } from 'lucide-react'
+import { CalendarDays, Filter, Fuel, Maximize2, RotateCcw, Search, Users, X } from 'lucide-react'
 import AppLayout from '~/layouts/app'
 import { InertiaProps } from '~/types'
 import { Button } from '~/components/ui/button'
@@ -70,6 +70,15 @@ type ChartBucket = {
   key: string
   label: string
   values: Record<string, number>
+}
+
+type ChartTooltip = {
+  x: number
+  y: number
+  bucketLabel: string
+  seriesLabel: string
+  value: number
+  color: string
 }
 
 const chartColors = [
@@ -349,18 +358,20 @@ function ActivityChart({
   onGroupingChange: (value: Grouping) => void
   onChartTypeChange: (value: ChartType) => void
 }) {
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [tooltip, setTooltip] = useState<ChartTooltip | null>(null)
   const { buckets, series } = useMemo(
     () => aggregateRecords(records, filters, grouping),
     [records, filters, grouping]
   )
   const maxValue = Math.max(1, ...buckets.flatMap((bucket) => Object.values(bucket.values)))
-  const chartHeight = 260
+  const chartHeight = isFullscreen ? 520 : 260
   const axisLeft = 44
   const axisBottom = 34
   const topPadding = 18
   const innerHeight = chartHeight - axisBottom - topPadding
   const bucketWidth = Math.max(74, series.length * 18 + 26)
-  const width = Math.max(640, axisLeft + buckets.length * bucketWidth + 24)
+  const width = Math.max(isFullscreen ? 960 : 640, axisLeft + buckets.length * bucketWidth + 24)
   const barGroupWidth = Math.min(bucketWidth - 24, series.length * 14)
   const barWidth = Math.max(5, Math.min(12, barGroupWidth / Math.max(series.length, 1) - 2))
   const getPoint = (bucket: ChartBucket, bucketIndex: number, item: ChartSeries) => {
@@ -371,152 +382,252 @@ function ActivityChart({
     return { x, y, value }
   }
 
-  return (
-    <Card className="gap-4 rounded-lg">
-      <CardHeader className="flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-1">
-          <CardTitle className="text-lg">{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
-        </div>
+  const showTooltip = (
+    event: MouseEvent<SVGElement>,
+    bucketLabel: string,
+    item: ChartSeries,
+    value: number
+  ) => {
+    setTooltip({
+      x: event.clientX + 12,
+      y: event.clientY + 12,
+      bucketLabel,
+      seriesLabel: item.label,
+      value,
+      color: item.color,
+    })
+  }
+
+  const moveTooltip = (event: MouseEvent<SVGElement>) => {
+    setTooltip((current) =>
+      current
+        ? {
+            ...current,
+            x: event.clientX + 12,
+            y: event.clientY + 12,
+          }
+        : current
+    )
+  }
+
+  const renderHeader = (fullscreen: boolean) => (
+    <CardHeader className="flex-col gap-3 md:flex-row md:items-start md:justify-between">
+      <div className="space-y-1">
+        <CardTitle className={fullscreen ? 'text-xl' : 'text-lg'}>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </div>
+      <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto md:items-end">
         <ChartControls
           grouping={grouping}
           chartType={chartType}
           onGroupingChange={onGroupingChange}
           onChartTypeChange={onChartTypeChange}
         />
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="overflow-x-auto rounded-md border bg-background">
-          <svg
-            role="img"
-            aria-label={title}
-            width={width}
-            height={chartHeight}
-            className="block min-h-[260px]"
+        <div className="space-y-1">
+          <Label className="text-xs text-muted-foreground">
+            {fullscreen ? 'Fechar' : 'Tela cheia'}
+          </Label>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="w-full md:w-9"
+            aria-label={fullscreen ? `Fechar ${title}` : `Expandir ${title}`}
+            onClick={() => setIsFullscreen(!fullscreen)}
           >
-            {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
-              const y = topPadding + innerHeight - innerHeight * tick
-              const value = Math.round(maxValue * tick)
+            {fullscreen ? <X className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+          </Button>
+        </div>
+      </div>
+    </CardHeader>
+  )
+
+  const renderChartBody = (fullscreen = false) => (
+    <CardContent className="space-y-4">
+      <div className="relative overflow-x-auto rounded-md border bg-background">
+        <svg
+          role="img"
+          aria-label={title}
+          width={width}
+          height={chartHeight}
+          className="block"
+          onMouseLeave={() => setTooltip(null)}
+        >
+          {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
+            const y = topPadding + innerHeight - innerHeight * tick
+            const value = Math.round(maxValue * tick)
+
+            return (
+              <g key={tick}>
+                <line
+                  x1={axisLeft}
+                  x2={width - 16}
+                  y1={y}
+                  y2={y}
+                  stroke="var(--border)"
+                  strokeDasharray={tick === 0 ? undefined : '4 4'}
+                />
+                <text
+                  x={axisLeft - 10}
+                  y={y + 4}
+                  textAnchor="end"
+                  className="fill-muted-foreground text-[11px]"
+                >
+                  {value}
+                </text>
+              </g>
+            )
+          })}
+
+          {chartType === 'bar' &&
+            buckets.map((bucket, bucketIndex) => {
+              const x = axisLeft + bucketIndex * bucketWidth + 14
 
               return (
-                <g key={tick}>
-                  <line
-                    x1={axisLeft}
-                    x2={width - 16}
-                    y1={y}
-                    y2={y}
-                    stroke="var(--border)"
-                    strokeDasharray={tick === 0 ? undefined : '4 4'}
-                  />
-                  <text
-                    x={axisLeft - 10}
-                    y={y + 4}
-                    textAnchor="end"
-                    className="fill-muted-foreground text-[11px]"
-                  >
-                    {value}
-                  </text>
+                <g key={bucket.key}>
+                  {series.map((item, seriesIndex) => {
+                    const value = bucket.values[item.key] ?? 0
+                    const height = (value / maxValue) * innerHeight
+                    const barX =
+                      x + (bucketWidth - barGroupWidth) / 2 + seriesIndex * (barWidth + 2)
+                    const barY = topPadding + innerHeight - height
+
+                    return (
+                      <rect
+                        key={item.key}
+                        x={barX}
+                        y={barY}
+                        width={barWidth}
+                        height={height}
+                        rx={3}
+                        fill={item.color}
+                        className="cursor-crosshair"
+                        onMouseEnter={(event) => showTooltip(event, bucket.label, item, value)}
+                        onMouseMove={moveTooltip}
+                      >
+                        <title>{`${item.label}: ${value.toLocaleString('pt-BR')}`}</title>
+                      </rect>
+                    )
+                  })}
                 </g>
               )
             })}
 
-            {chartType === 'bar' &&
-              buckets.map((bucket, bucketIndex) => {
-                const x = axisLeft + bucketIndex * bucketWidth + 14
-
-                return (
-                  <g key={bucket.key}>
-                    {series.map((item, seriesIndex) => {
-                      const value = bucket.values[item.key] ?? 0
-                      const height = (value / maxValue) * innerHeight
-                      const barX =
-                        x + (bucketWidth - barGroupWidth) / 2 + seriesIndex * (barWidth + 2)
-                      const barY = topPadding + innerHeight - height
-
-                      return (
-                        <rect
-                          key={item.key}
-                          x={barX}
-                          y={barY}
-                          width={barWidth}
-                          height={height}
-                          rx={3}
-                          fill={item.color}
-                        >
-                          <title>{`${item.label}: ${value.toLocaleString('pt-BR')}`}</title>
-                        </rect>
-                      )
-                    })}
-                  </g>
-                )
-              })}
-
-            {chartType === 'line' &&
-              series.map((item) => {
-                const points = buckets.map((bucket, bucketIndex) =>
-                  getPoint(bucket, bucketIndex, item)
-                )
-                const path = points
-                  .map(
-                    (point, pointIndex) => `${pointIndex === 0 ? 'M' : 'L'} ${point.x} ${point.y}`
-                  )
-                  .join(' ')
-
-                return (
-                  <g key={item.key}>
-                    <path
-                      d={path}
-                      fill="none"
-                      stroke={item.color}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                    />
-                    {points.map((point, index) => (
-                      <circle
-                        key={`${item.key}-${buckets[index].key}`}
-                        cx={point.x}
-                        cy={point.y}
-                        r={3.5}
-                        fill="var(--background)"
-                        stroke={item.color}
-                        strokeWidth={2}
-                      >
-                        <title>{`${item.label}: ${point.value.toLocaleString('pt-BR')}`}</title>
-                      </circle>
-                    ))}
-                  </g>
-                )
-              })}
-
-            {buckets.map((bucket, bucketIndex) => {
-              const x = axisLeft + bucketIndex * bucketWidth + 14
+          {chartType === 'line' &&
+            series.map((item) => {
+              const points = buckets.map((bucket, bucketIndex) =>
+                getPoint(bucket, bucketIndex, item)
+              )
+              const total = points.reduce((sum, point) => sum + point.value, 0)
+              const path = points
+                .map((point, pointIndex) => `${pointIndex === 0 ? 'M' : 'L'} ${point.x} ${point.y}`)
+                .join(' ')
 
               return (
-                <text
-                  key={bucket.key}
-                  x={x + bucketWidth / 2 - 4}
-                  y={chartHeight - 12}
-                  textAnchor="middle"
-                  className="fill-muted-foreground text-[11px]"
-                >
-                  {bucket.label}
-                </text>
+                <g key={item.key}>
+                  <path
+                    d={path}
+                    fill="none"
+                    stroke="transparent"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={14}
+                    className="cursor-crosshair"
+                    onMouseEnter={(event) => showTooltip(event, 'Total da linha', item, total)}
+                    onMouseMove={moveTooltip}
+                  />
+                  <path
+                    d={path}
+                    fill="none"
+                    stroke={item.color}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    pointerEvents="none"
+                  />
+                  {points.map((point, index) => (
+                    <circle
+                      key={`${item.key}-${buckets[index].key}`}
+                      cx={point.x}
+                      cy={point.y}
+                      r={4}
+                      fill="var(--background)"
+                      stroke={item.color}
+                      strokeWidth={2}
+                      className="cursor-crosshair"
+                      onMouseEnter={(event) =>
+                        showTooltip(event, buckets[index].label, item, point.value)
+                      }
+                      onMouseMove={moveTooltip}
+                    >
+                      <title>{`${item.label}: ${point.value.toLocaleString('pt-BR')}`}</title>
+                    </circle>
+                  ))}
+                </g>
               )
             })}
-          </svg>
-        </div>
 
-        <div className="flex flex-wrap gap-3">
-          {series.map((item) => (
-            <div key={item.key} className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: item.color }} />
-              <span>{item.label}</span>
-            </div>
-          ))}
+          {buckets.map((bucket, bucketIndex) => {
+            const x = axisLeft + bucketIndex * bucketWidth + 14
+
+            return (
+              <text
+                key={bucket.key}
+                x={x + bucketWidth / 2 - 4}
+                y={chartHeight - 12}
+                textAnchor="middle"
+                className="fill-muted-foreground text-[11px]"
+              >
+                {bucket.label}
+              </text>
+            )
+          })}
+        </svg>
+      </div>
+
+      <div className="flex flex-wrap gap-3">
+        {series.map((item) => (
+          <div key={item.key} className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: item.color }} />
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+
+      {tooltip && (fullscreen || !isFullscreen) && (
+        <div
+          className="fixed z-50 min-w-36 rounded-md border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md"
+          style={{ left: tooltip.x, top: tooltip.y }}
+        >
+          <div className="font-medium">{tooltip.bucketLabel}</div>
+          <div className="mt-1 flex items-center gap-2 text-muted-foreground">
+            <span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: tooltip.color }} />
+            <span>{tooltip.seriesLabel}</span>
+          </div>
+          <div className="mt-1 text-sm font-semibold tabular-nums">
+            {tooltip.value.toLocaleString('pt-BR')}
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </CardContent>
+  )
+
+  return (
+    <>
+      <Card className="gap-4 rounded-lg">
+        {renderHeader(false)}
+        {renderChartBody(false)}
+      </Card>
+
+      {isFullscreen && (
+        <div className="fixed inset-0 z-40 bg-background/95 p-3 backdrop-blur-sm md:p-6">
+          <Card className="h-full gap-4 overflow-hidden rounded-lg">
+            {renderHeader(true)}
+            <div className="min-h-0 flex-1 overflow-auto">{renderChartBody(true)}</div>
+          </Card>
+        </div>
+      )}
+    </>
   )
 }
 
