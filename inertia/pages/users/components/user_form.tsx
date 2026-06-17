@@ -129,9 +129,12 @@ const UserForm = defineUserFormComponent((props) => {
                   id="gasStationId"
                   name="gasStationId"
                   defaultValue={user?.gasStationId ? String(user.gasStationId) : ''}
+                  required
                   aria-invalid={!!errors.gasStationId}
                 >
-                  <NativeSelectOption value="">Sem posto vinculado</NativeSelectOption>
+                  <NativeSelectOption value="" disabled>
+                    Selecione um posto
+                  </NativeSelectOption>
                   {gasStations.map((gasStation) => (
                     <NativeSelectOption key={gasStation.id} value={String(gasStation.id)}>
                       {gasStation.name}

@@ -14,6 +14,10 @@ type ConsultationDetails = {
   partner: string | null
   partnerLabel: string | null
   gasStationName: string | null
+  user: {
+    id: number
+    name: string
+  } | null
   vehicleSituation: string
   wasRefueled: boolean
   consultedBy: string
@@ -89,6 +93,22 @@ export default function ConsultationsShow({ consultation }: Props) {
           value={consultation.partnerLabel || consultation.partner || 'Nao informado'}
         />
         <DetailItem label="Posto" value={consultation.gasStationName ?? 'Nao informado'} />
+        <DetailItem
+          label="Usuário"
+          value={
+            consultation.user ? (
+              <Link
+                href={`/usuarios/${consultation.user.id}`}
+                className="inline-flex items-center gap-2 text-primary hover:underline"
+              >
+                <UserRound className="h-4 w-4" />
+                {consultation.user.name}
+              </Link>
+            ) : (
+              'Nao informado'
+            )
+          }
+        />
         <DetailItem
           label="Consultado por"
           value={

@@ -31,6 +31,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/gas_stations_controller').default['get']>>>
     }
   }
+  'associate_leads.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/gas-station-app/associate-leads'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/associate_leads_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/associate_leads_controller').default['store']>>>
+    }
+  }
+  'fuel_suply_cancellations.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/gas-station-app/fuel-suply-cancellations'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/fuel_suply_cancellations_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/fuel_suply_cancellations_controller').default['store']>>>
+    }
+  }
   'consultantions.store': {
     methods: ["POST"]
     pattern: '/api/v1/gas-station-app/consultations'
@@ -91,7 +115,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/plate_recognizer_controller').default['store']>>>
     }
   }
-  'associates.show': {
+  'vehicles.show': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/gas-station-app/ileva/vehicle/:licensePlate'
     types: {
@@ -99,8 +123,8 @@ export interface Registry {
       paramsTuple: [ParamValue]
       params: { licensePlate: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associates_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/associates_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/vehicles_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/api/v_1/gas_station_app/ileva/vehicles_controller').default['show']>>>
     }
   }
   'ileva.associate.show': {
@@ -305,6 +329,54 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/consultations_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/consultations_controller').default['show']>>>
+    }
+  }
+  'associate_leads.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/leads-associados'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/associate_leads_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/associate_leads_controller').default['index']>>>
+    }
+  }
+  'associate_leads.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/leads-associados/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/associate_leads_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/associate_leads_controller').default['show']>>>
+    }
+  }
+  'fuel_suply_cancellations.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/cancelamentos-abastecimento'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/fuel_suply_cancellations_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/fuel_suply_cancellations_controller').default['index']>>>
+    }
+  }
+  'fuel_suply_cancellations.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/cancelamentos-abastecimento/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/fuel_suply_cancellations_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/fuel_suply_cancellations_controller').default['show']>>>
     }
   }
   'vounchers.index': {

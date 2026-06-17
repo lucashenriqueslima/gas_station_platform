@@ -8,12 +8,14 @@ import { Separator } from '~/components/ui/separator'
 import { Card, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { cn } from '~/lib/utils'
 import {
+  Ban,
   LayoutDashboard,
   LogOut,
   Menu,
   Search,
   Ticket,
   Users,
+  UserPlus,
   X,
   type LucideProps,
 } from 'lucide-react'
@@ -29,6 +31,8 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, href: '/' },
   { label: 'Consultas', icon: Search, href: '/consultas' },
+  { label: 'Leads associados', icon: UserPlus, href: '/leads-associados' },
+  { label: 'Cancelamentos', icon: Ban, href: '/cancelamentos-abastecimento' },
   { label: 'Vounchers', icon: Ticket, href: '/vounchers' },
   { label: 'Usuários', icon: Users, href: '/usuarios' },
 ]

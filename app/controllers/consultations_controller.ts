@@ -1,4 +1,6 @@
 import Consultation from '#models/consultation'
+import GasStation from '#models/gas_station'
+import User from '#models/user'
 import ConsultationPolicy from '#policies/consultation_policy'
 import type { HttpContext } from '@adonisjs/core/http'
 import TableFilter from '../helpers/table_filter.js'
@@ -13,30 +15,45 @@ export default class ConsultationsController {
       defaultOrder: 'desc',
       allowedSorts: ['id', 'license_plate', 'partner', 'consulted_by', 'created_at'],
     })
-    const type = String(request.input('type') ?? '').trim()
-    const consultedBy = String(request.input('consultedBy') ?? '').trim()
-    const wasRefueled = String(request.input('wasRefueled') ?? '').trim()
+    const types = this.parseCsvFilter(request.input('type'))
+    const consultedBy = this.parseCsvFilter(request.input('consultedBy'))
+    const wasRefueled = this.parseCsvFilter(request.input('wasRefueled'))
+    const gasStationIds = this.parseCsvFilter(request.input('gasStationId'))
+    const userIds = this.parseCsvFilter(request.input('userId'))
     const startDate = String(request.input('startDate') ?? '').trim()
     const endDate = String(request.input('endDate') ?? '').trim()
 
     const consultations = await table.paginate(
       Consultation.query()
         .preload('gasStation')
+        .preload('user')
         .if(table.search, (query) => {
-          query
-            .whereILike('license_plate', `%${table.search}%`)
-            .orWhereILike('partner', `%${table.search}%`)
-            .orWhereILike('consulted_by', `%${table.search}%`)
-            .orWhereILike('id', `%${table.search}%`)
+          query.where((searchQuery) => {
+            searchQuery
+              .whereILike('license_plate', `%${table.search}%`)
+              .orWhereILike('partner', `%${table.search}%`)
+              .orWhereILike('consulted_by', `%${table.search}%`)
+
+            const numericSearch = Number(table.search)
+            if (Number.isInteger(numericSearch)) {
+              searchQuery.orWhere('id', numericSearch)
+            }
+          })
         })
-        .if(type, (query) => {
-          query.where('partner', type)
+        .if(types.length > 0, (query) => {
+          query.whereIn('partner', types)
         })
-        .if(consultedBy, (query) => {
-          query.where('consulted_by', consultedBy)
+        .if(consultedBy.length > 0, (query) => {
+          query.whereIn('consulted_by', consultedBy)
         })
-        .if(wasRefueled === 'true' || wasRefueled === 'false', (query) => {
-          query.where('was_refueled', wasRefueled === 'true')
+        .if(wasRefueled.length === 1 && ['true', 'false'].includes(wasRefueled[0]), (query) => {
+          query.where('was_refueled', wasRefueled[0] === 'true')
+        })
+        .if(gasStationIds.length > 0, (query) => {
+          query.whereIn('gas_station_id', gasStationIds)
+        })
+        .if(userIds.length > 0, (query) => {
+          query.whereIn('user_id', userIds)
         })
         .if(startDate, (query) => {
           query.where('created_at', '>=', startDate)
@@ -45,6 +62,11 @@ export default class ConsultationsController {
           query.where('created_at', '<=', DateTime.fromISO(endDate).endOf('day').toSQL()!)
         })
     )
+
+    const [gasStations, users] = await Promise.all([
+      GasStation.query().select(['id', 'name']).orderBy('name', 'asc'),
+      User.query().select(['id', 'full_name', 'email']).orderBy('full_name', 'asc'),
+    ])
 
     return inertia.render('consultations/index', {
       data: consultations.all().map((consultation) => this.serializeConsultation(consultation)),
@@ -56,9 +78,11 @@ export default class ConsultationsController {
       },
       filters: {
         ...table.filters,
-        type: type || undefined,
-        consultedBy: consultedBy || undefined,
-        wasRefueled: wasRefueled || undefined,
+        type: types.join(',') || undefined,
+        consultedBy: consultedBy.join(',') || undefined,
+        wasRefueled: wasRefueled.join(',') || undefined,
+        gasStationId: gasStationIds.join(',') || undefined,
+        userId: userIds.join(',') || undefined,
         startDate: startDate || undefined,
         endDate: endDate || undefined,
       },
@@ -76,6 +100,14 @@ export default class ConsultationsController {
           { value: 'cpf', label: 'CPF' },
           { value: 'vouncher', label: 'Voucher' },
         ],
+        gasStations: gasStations.map((gasStation) => ({
+          value: String(gasStation.id),
+          label: gasStation.name,
+        })),
+        users: users.map((user) => ({
+          value: String(user.id),
+          label: user.fullName ?? user.email,
+        })),
       },
     })
   }
@@ -84,6 +116,7 @@ export default class ConsultationsController {
     const consultation = await Consultation.query()
       .where('id', params.id)
       .preload('gasStation')
+      .preload('user')
       .firstOrFail()
 
     await bouncer.with(ConsultationPolicy).authorize('view', consultation)
@@ -101,6 +134,12 @@ export default class ConsultationsController {
       partner: consultation.partner,
       partnerLabel: consultation.partnerLabel,
       gasStationName: consultation.gasStation?.name ?? null,
+      user: consultation.user
+        ? {
+            id: consultation.user.id,
+            name: consultation.user.fullName ?? consultation.user.email,
+          }
+        : null,
       vehicleSituation: consultation.vehicleSituation,
       wasRefueled: Boolean(consultation.wasRefueled),
       consultedBy: consultation.consultedBy,
@@ -109,5 +148,12 @@ export default class ConsultationsController {
       createdAt: consultation.formattedCreatedAt,
       updatedAt: consultation.updatedAt?.toFormat('dd/MM/yyyy HH:mm') ?? null,
     }
+  }
+
+  private parseCsvFilter(value: unknown) {
+    return String(value ?? '')
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean)
   }
 }

@@ -22,3 +22,10 @@ export type IlevaChargeListParams = {
   start: number
   perPage: number
 }
+
+export type IlevaCreateLeadParams = {
+  name: string
+  phone: string
+  originCode: number
+  indicatorAssociateId: number
+}

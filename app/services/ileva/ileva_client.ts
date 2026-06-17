@@ -10,6 +10,7 @@ import {
 } from './response_helpers.js'
 import type {
   IlevaChargeListParams,
+  IlevaCreateLeadParams,
   IlevaPartner,
   IlevaPartnerResult,
   IlevaQueryValue,
@@ -86,6 +87,17 @@ class IlevaClient {
     return data
   }
 
+  async createLead(partner: IlevaPartner, params: IlevaCreateLeadParams) {
+    const { data } = await this.post(partner, '/lead/inserir', {
+      nome: params.name,
+      telefone: params.phone,
+      cod_origem: params.originCode,
+      cod_associado_indicador: params.indicatorAssociateId,
+    })
+
+    return data
+  }
+
   async getTermById(partner: IlevaPartner, termId: number) {
     const { data } = await this.request(partner, `/termo/${termId}`, {})
 
@@ -117,6 +129,42 @@ class IlevaClient {
     }
   }
 
+  private async post(
+    partner: IlevaPartner,
+    path: string,
+    body: Record<string, IlevaQueryValue>
+  ): Promise<IlevaPartnerResult> {
+    const url = this.buildUrl(path, {})
+    const init = this.jsonPostInit(body)
+
+    try {
+      return {
+        partner,
+        data: await this.fetchJson(url, await this.getAccessToken(partner), init),
+      }
+    } catch (error) {
+      if (!(error instanceof UpstreamApiError) || error.status !== 401) {
+        throw error
+      }
+
+      this.tokenCache.delete(partner)
+      return {
+        partner,
+        data: await this.fetchJson(url, await this.getAccessToken(partner, true), init),
+      }
+    }
+  }
+
+  private jsonPostInit(body: Record<string, IlevaQueryValue>): RequestInit {
+    return {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }
+  }
+
   private buildUrl(path: string, query: Record<string, IlevaQueryValue>) {
     const url = new URL(path, env.get('ILEVA_BASE_URL'))
 
@@ -135,10 +183,16 @@ class IlevaClient {
     return `${year}-${month}-${day}`
   }
 
-  private async fetchJson(url: URL, token: string): Promise<unknown> {
+  private async fetchJson(
+    url: URL,
+    token: string,
+    init: RequestInit = {}
+  ): Promise<unknown> {
     const response = await fetch(url, {
+      ...init,
       headers: {
         Accept: 'application/json',
+        ...init.headers,
         Authorization: `Bearer ${token}`,
       },
       signal: AbortSignal.timeout(15000),

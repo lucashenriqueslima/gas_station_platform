@@ -8,6 +8,16 @@ export interface ApiDefinition {
   gasStations: {
     get: typeof routes['gas_stations.get']
   }
+  associateLeads: {
+    store: typeof routes['associate_leads.store']
+    index: typeof routes['associate_leads.index']
+    show: typeof routes['associate_leads.show']
+  }
+  fuelSuplyCancellations: {
+    store: typeof routes['fuel_suply_cancellations.store']
+    index: typeof routes['fuel_suply_cancellations.index']
+    show: typeof routes['fuel_suply_cancellations.show']
+  }
   consultantions: {
     store: typeof routes['consultantions.store']
     update: typeof routes['consultantions.update']
@@ -25,8 +35,8 @@ export interface ApiDefinition {
   plateRecognizer: {
     store: typeof routes['plate_recognizer.store']
   }
-  associates: {
-    show: typeof routes['associates.show']
+  vehicles: {
+    show: typeof routes['vehicles.show']
   }
   ileva: {
     associate: {

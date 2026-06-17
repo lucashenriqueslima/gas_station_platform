@@ -18,6 +18,18 @@ const routes = {
     tokens: [{"old":"/api/v1/gas-station-app/gas-station","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/gas-station","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/gas-station","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/gas-station","type":0,"val":"gas-station","end":""}],
     types: placeholder as Registry['gas_stations.get']['types'],
   },
+  'associate_leads.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/gas-station-app/associate-leads',
+    tokens: [{"old":"/api/v1/gas-station-app/associate-leads","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/associate-leads","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/associate-leads","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/associate-leads","type":0,"val":"associate-leads","end":""}],
+    types: placeholder as Registry['associate_leads.store']['types'],
+  },
+  'fuel_suply_cancellations.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/gas-station-app/fuel-suply-cancellations',
+    tokens: [{"old":"/api/v1/gas-station-app/fuel-suply-cancellations","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/fuel-suply-cancellations","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/fuel-suply-cancellations","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/fuel-suply-cancellations","type":0,"val":"fuel-suply-cancellations","end":""}],
+    types: placeholder as Registry['fuel_suply_cancellations.store']['types'],
+  },
   'consultantions.store': {
     methods: ["POST"],
     pattern: '/api/v1/gas-station-app/consultations',
@@ -48,11 +60,11 @@ const routes = {
     tokens: [{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/plate-recognizer","type":0,"val":"plate-recognizer","end":""}],
     types: placeholder as Registry['plate_recognizer.store']['types'],
   },
-  'associates.show': {
+  'vehicles.show': {
     methods: ["GET","HEAD"],
     pattern: '/api/v1/gas-station-app/ileva/vehicle/:licensePlate',
     tokens: [{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"api","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"v1","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"gas-station-app","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"ileva","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":0,"val":"vehicle","end":""},{"old":"/api/v1/gas-station-app/ileva/vehicle/:licensePlate","type":1,"val":"licensePlate","end":""}],
-    types: placeholder as Registry['associates.show']['types'],
+    types: placeholder as Registry['vehicles.show']['types'],
   },
   'ileva.associate.show': {
     methods: ["GET","HEAD"],
@@ -155,6 +167,30 @@ const routes = {
     pattern: '/consultas/:id',
     tokens: [{"old":"/consultas/:id","type":0,"val":"consultas","end":""},{"old":"/consultas/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['consultations.show']['types'],
+  },
+  'associate_leads.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/leads-associados',
+    tokens: [{"old":"/leads-associados","type":0,"val":"leads-associados","end":""}],
+    types: placeholder as Registry['associate_leads.index']['types'],
+  },
+  'associate_leads.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/leads-associados/:id',
+    tokens: [{"old":"/leads-associados/:id","type":0,"val":"leads-associados","end":""},{"old":"/leads-associados/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['associate_leads.show']['types'],
+  },
+  'fuel_suply_cancellations.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/cancelamentos-abastecimento',
+    tokens: [{"old":"/cancelamentos-abastecimento","type":0,"val":"cancelamentos-abastecimento","end":""}],
+    types: placeholder as Registry['fuel_suply_cancellations.index']['types'],
+  },
+  'fuel_suply_cancellations.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/cancelamentos-abastecimento/:id',
+    tokens: [{"old":"/cancelamentos-abastecimento/:id","type":0,"val":"cancelamentos-abastecimento","end":""},{"old":"/cancelamentos-abastecimento/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['fuel_suply_cancellations.show']['types'],
   },
   'vounchers.index': {
     methods: ["GET","HEAD"],

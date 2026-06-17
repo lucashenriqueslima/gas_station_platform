@@ -1,5 +1,6 @@
 import { ConsultationSchema } from '#database/schema'
 import GasStation from '#models/gas_station'
+import User from '#models/user'
 import { belongsTo, column } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 
@@ -21,10 +22,18 @@ export default class Consultation extends ConsultationSchema {
   @column({ columnName: 'gas_station_id' })
   declare gasStationId: number | null
 
+  @column({ columnName: 'user_id' })
+  declare userId: number | null
+
   @belongsTo(() => GasStation, {
     foreignKey: 'gasStationId',
   })
   declare gasStation: BelongsTo<typeof GasStation>
+
+  @belongsTo(() => User, {
+    foreignKey: 'userId',
+  })
+  declare user: BelongsTo<typeof User>
 
   get formattedCreatedAt() {
     return this.createdAt.toFormat('dd/MM/yyyy HH:mm')

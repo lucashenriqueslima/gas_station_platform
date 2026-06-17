@@ -8,11 +8,14 @@ export const controllers = {
     v1: {
       gasStationApp: {
         AccessTokens: () => import('#controllers/api/v_1/gas_station_app/access_tokens_controller'),
+        AssociateLeads: () => import('#controllers/api/v_1/gas_station_app/associate_leads_controller'),
         Consultantions: () => import('#controllers/api/v_1/gas_station_app/consultantions_controller'),
+        FuelSuplyCancellations: () => import('#controllers/api/v_1/gas_station_app/fuel_suply_cancellations_controller'),
         GasStations: () => import('#controllers/api/v_1/gas_station_app/gas_stations_controller'),
         ileva: {
           AssociateCharges: () => import('#controllers/api/v_1/gas_station_app/ileva/associate_charges_controller'),
           Associates: () => import('#controllers/api/v_1/gas_station_app/ileva/associates_controller'),
+          Leads: () => import('#controllers/api/v_1/gas_station_app/ileva/leads_controller'),
           Vehicles: () => import('#controllers/api/v_1/gas_station_app/ileva/vehicles_controller'),
         },
         PlateRecognizer: () => import('#controllers/api/v_1/gas_station_app/plate_recognizer_controller'),
@@ -21,7 +24,9 @@ export const controllers = {
       },
     },
   },
+  AssociateLeads: () => import('#controllers/associate_leads_controller'),
   Consultations: () => import('#controllers/consultations_controller'),
+  FuelSuplyCancellations: () => import('#controllers/fuel_suply_cancellations_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
   Session: () => import('#controllers/session_controller'),
   Users: () => import('#controllers/users_controller'),

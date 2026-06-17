@@ -12,6 +12,8 @@ type ExtractProps<T> =
 
 declare module '@adonisjs/inertia/types' {
   export interface InertiaPages {
+    'associate_leads/index': ExtractProps<(typeof import('../../inertia/pages/associate_leads/index.tsx'))['default']>
+    'associate_leads/show': ExtractProps<(typeof import('../../inertia/pages/associate_leads/show.tsx'))['default']>
     'auth/login': ExtractProps<(typeof import('../../inertia/pages/auth/login.tsx'))['default']>
     'auth/signup': ExtractProps<(typeof import('../../inertia/pages/auth/signup.tsx'))['default']>
     'client/vouncher/show': ExtractProps<(typeof import('../../inertia/pages/client/vouncher/show.tsx'))['default']>
@@ -19,6 +21,8 @@ declare module '@adonisjs/inertia/types' {
     'consultations/show': ExtractProps<(typeof import('../../inertia/pages/consultations/show.tsx'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
+    'fuel_suply_cancellations/index': ExtractProps<(typeof import('../../inertia/pages/fuel_suply_cancellations/index.tsx'))['default']>
+    'fuel_suply_cancellations/show': ExtractProps<(typeof import('../../inertia/pages/fuel_suply_cancellations/show.tsx'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
     'users/components/user_form_contract': ExtractProps<(typeof import('../../inertia/pages/users/components/user_form_contract.ts'))['default']>
     'users/components/user_form': ExtractProps<(typeof import('../../inertia/pages/users/components/user_form.tsx'))['default']>

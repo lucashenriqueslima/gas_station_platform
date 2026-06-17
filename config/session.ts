@@ -11,7 +11,7 @@ const sessionConfig = defineConfig({
   /**
    * Cookie name storing the session identifier.
    */
-  cookieName: 'adonis-session',
+  cookieName: 'gas-station-platform-session',
 
   /**
    * When set to true, the session id cookie will be deleted

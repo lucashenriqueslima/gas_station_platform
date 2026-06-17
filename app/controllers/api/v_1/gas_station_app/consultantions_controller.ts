@@ -4,7 +4,7 @@ import drive from '@adonisjs/drive/services/main'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ConsultantionsController {
-  async store({ request, response }: HttpContext) {
+  async store({ auth, request, response }: HttpContext) {
     const {
       ilevaVehicleId,
       licensePlate,
@@ -35,6 +35,7 @@ export default class ConsultantionsController {
       vehicleSituation,
       consultedBy,
       gasStationId: gas_station ?? gasStationId ?? null,
+      userId: auth.user!.id,
       wasRefueled: false,
       fuelPumpVisorImage: null,
     })
@@ -42,7 +43,7 @@ export default class ConsultantionsController {
     return response.status(201).json(consultation)
   }
 
-  async update({ params, request, response }: HttpContext) {
+  async update({ auth, params, request, response }: HttpContext) {
     const consultation = await Consultation.findOrFail(params.id)
 
     const image = request.file('image', {
@@ -79,6 +80,7 @@ export default class ConsultantionsController {
 
     consultation.merge({
       fuelPumpVisorImage: await drive.use().getUrl(fileKey),
+      userId: auth.user!.id,
       wasRefueled: true,
     })
 

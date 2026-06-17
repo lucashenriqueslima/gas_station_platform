@@ -20,54 +20,45 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu'
 
-type ConsultationRow = {
+type FuelSuplyCancellationRow = {
   id: number
-  ilevaVehicleId: number | null
-  licensePlate: string
-  partner: string | null
-  partnerLabel: string | null
-  gasStationName: string | null
+  plate: string
+  reason: string
   user: {
     id: number
     name: string
   } | null
-  vehicleSituation: string
-  wasRefueled: boolean
-  consultedBy: string
-  consultedByLabel: string
-  fuelPumpVisorImage: string | null
+  gasStationName: string | null
   createdAt: string
   updatedAt: string | null
 }
 
 type Props = InertiaProps<{
-  data: ConsultationRow[]
+  data: FuelSuplyCancellationRow[]
   meta: PaginationMeta
   filters: DataTableFilters
   filterOptions: {
-    types: { value: string; label: string }[]
-    wasRefueledOptions: { value: string; label: string }[]
-    consultedByOptions: { value: string; label: string }[]
-    gasStations: { value: string; label: string }[]
     users: { value: string; label: string }[]
+    gasStations: { value: string; label: string }[]
   }
 }>
 
-const columns: ColumnDef<ConsultationRow>[] = [
+const columns: ColumnDef<FuelSuplyCancellationRow>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
     enableSorting: true,
   },
   {
-    accessorKey: 'licensePlate',
+    accessorKey: 'plate',
     header: 'Placa',
     enableSorting: true,
   },
   {
-    accessorKey: 'partnerLabel',
-    header: 'Parceiro',
-    enableSorting: true,
+    accessorKey: 'reason',
+    header: 'Motivo',
+    enableSorting: false,
+    cell: ({ row }) => <div className="max-w-md truncate">{row.original.reason}</div>,
   },
   {
     accessorKey: 'gasStationName',
@@ -92,17 +83,6 @@ const columns: ColumnDef<ConsultationRow>[] = [
       ),
   },
   {
-    accessorKey: 'consultedByLabel',
-    header: 'Consultado por',
-    enableSorting: true,
-  },
-  {
-    accessorKey: 'wasRefueled',
-    header: 'Foi Abastecido',
-    enableSorting: true,
-    cell: ({ row }) => (row.original.wasRefueled ? 'Sim' : 'Não'),
-  },
-  {
     accessorKey: 'createdAt',
     header: 'Data',
     enableSorting: true,
@@ -116,14 +96,14 @@ const columns: ColumnDef<ConsultationRow>[] = [
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label={`Abrir ações da consulta ${row.original.id}`}
+            aria-label={`Abrir ações do cancelamento ${row.original.id}`}
           >
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
-            <Link href={`/consultas/${row.original.id}`}>
+            <Link href={`/cancelamentos-abastecimento/${row.original.id}`}>
               <Eye className="h-4 w-4" />
               Ver mais
             </Link>
@@ -136,17 +116,14 @@ const columns: ColumnDef<ConsultationRow>[] = [
 
 function valuesFromFilters(filters: DataTableFilters): AdminTableFilterValues {
   return {
-    type: typeof filters.type === 'string' ? filters.type : undefined,
-    consultedBy: typeof filters.consultedBy === 'string' ? filters.consultedBy : undefined,
-    wasRefueled: typeof filters.wasRefueled === 'string' ? filters.wasRefueled : undefined,
-    gasStationId: typeof filters.gasStationId === 'string' ? filters.gasStationId : undefined,
     userId: typeof filters.userId === 'string' ? filters.userId : undefined,
+    gasStationId: typeof filters.gasStationId === 'string' ? filters.gasStationId : undefined,
     startDate: typeof filters.startDate === 'string' ? filters.startDate : undefined,
     endDate: typeof filters.endDate === 'string' ? filters.endDate : undefined,
   }
 }
 
-export default function ConsultationsIndex({ data, meta, filters, filterOptions }: Props) {
+export default function FuelSuplyCancellationsIndex({ data, meta, filters, filterOptions }: Props) {
   const [filterValues, setFilterValues] = useState<AdminTableFilterValues>(() =>
     valuesFromFilters(filters)
   )
@@ -165,9 +142,6 @@ export default function ConsultationsIndex({ data, meta, filters, filterOptions 
     if (typeof filters.perPage === 'number' && filters.perPage !== 10) {
       query.perPage = String(filters.perPage)
     }
-    if (nextValues.type) query.type = nextValues.type
-    if (nextValues.consultedBy) query.consultedBy = nextValues.consultedBy
-    if (nextValues.wasRefueled) query.wasRefueled = nextValues.wasRefueled
     if (nextValues.gasStationId) query.gasStationId = nextValues.gasStationId
     if (nextValues.userId) query.userId = nextValues.userId
     if (nextValues.startDate) query.startDate = nextValues.startDate
@@ -178,30 +152,6 @@ export default function ConsultationsIndex({ data, meta, filters, filterOptions 
 
   const filterPanel: DataTableFilterPanelProps = {
     fields: [
-      {
-        key: 'type',
-        label: 'Parceiro',
-        type: 'combobox',
-        placeholder: 'Selecione um parceiro',
-        options: filterOptions.types,
-        emptyLabel: 'Nenhum parceiro encontrado.',
-      },
-      {
-        key: 'wasRefueled',
-        label: 'Foi abastecido',
-        type: 'combobox',
-        placeholder: 'Selecione uma opção',
-        options: filterOptions.wasRefueledOptions,
-        emptyLabel: 'Nenhuma opção encontrada.',
-      },
-      {
-        key: 'consultedBy',
-        label: 'Consultado por',
-        type: 'combobox',
-        placeholder: 'Selecione uma origem',
-        options: filterOptions.consultedByOptions,
-        emptyLabel: 'Nenhuma origem encontrada.',
-      },
       {
         key: 'gasStationId',
         label: 'Posto',
@@ -240,14 +190,17 @@ export default function ConsultationsIndex({ data, meta, filters, filterOptions 
       data={data}
       meta={meta}
       filters={filters}
-      searchPlaceholder="Buscar por placa, parceiro ou origem..."
+      searchPlaceholder="Buscar por placa, motivo ou ID..."
       filterPanel={filterPanel}
     />
   )
 }
 
-ConsultationsIndex.layout = (page: ReactNode) => (
-  <AppLayout title="Consultas" description="Listagem das consultas realizadas na plataforma.">
+FuelSuplyCancellationsIndex.layout = (page: ReactNode) => (
+  <AppLayout
+    title="Cancelamentos de abastecimento"
+    description="Listagem dos cancelamentos de abastecimento registrados no aplicativo."
+  >
     {page}
   </AppLayout>
 )

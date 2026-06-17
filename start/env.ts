@@ -57,4 +57,10 @@ export default await Env.create(new URL('../', import.meta.url), {
   FACE_RECOGNITION_MIN_CONFIDENCE: Env.schema.number.optional(),
   FACE_RECOGNITION_MATCH_THRESHOLD: Env.schema.number.optional(),
   FACE_RECOGNITION_MAX_IMAGES_PER_USER: Env.schema.number.optional(),
+
+  EZCHAT_BASE_URL: Env.schema.string({ format: 'url', tld: false }),
+  EZCHAT_API_TOKEN: Env.schema.secret(),
+
+  EVOLUTION_BASE_URL: Env.schema.string({ format: 'url', tld: false }),
+  EVOLUTION_API_KEY: Env.schema.secret()
 })

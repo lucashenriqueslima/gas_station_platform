@@ -7,6 +7,27 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class AssociateLeadSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'ilevaAssociateId', 'ilevaLeadId', 'name', 'phone', 'updatedAt', 'userId'] as const
+  $columns = AssociateLeadSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare ilevaAssociateId: number | null
+  @column()
+  declare ilevaLeadId: number | null
+  @column()
+  declare name: string | null
+  @column()
+  declare phone: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number | null
+}
+
 export class AuthAccessTokenSchema extends BaseModel {
   static $columns = ['abilities', 'createdAt', 'expiresAt', 'hash', 'id', 'lastUsedAt', 'name', 'tokenableId', 'type', 'updatedAt'] as const
   $columns = AuthAccessTokenSchema.$columns
@@ -33,7 +54,7 @@ export class AuthAccessTokenSchema extends BaseModel {
 }
 
 export class ConsultationSchema extends BaseModel {
-  static $columns = ['consultedBy', 'createdAt', 'fuelPumpVisorImage', 'gasStationId', 'id', 'ilevaVehicleId', 'licensePlate', 'partner', 'updatedAt', 'vehicleSituation', 'wasRefueled'] as const
+  static $columns = ['consultedBy', 'createdAt', 'fuelPumpVisorImage', 'gasStationId', 'id', 'ilevaVehicleId', 'licensePlate', 'partner', 'updatedAt', 'userId', 'vehicleSituation', 'wasRefueled'] as const
   $columns = ConsultationSchema.$columns
   @column()
   declare consultedBy: string
@@ -54,9 +75,28 @@ export class ConsultationSchema extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
+  declare userId: number | null
+  @column()
   declare vehicleSituation: string
   @column({ consume: (value) => (value === null ? null : Boolean(value)) })
   declare wasRefueled: boolean | null
+}
+
+export class FuelSuplyCancellationSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'plate', 'reason', 'updatedAt', 'userId'] as const
+  $columns = FuelSuplyCancellationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare plate: string
+  @column()
+  declare reason: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number | null
 }
 
 export class GasStationSchema extends BaseModel {
