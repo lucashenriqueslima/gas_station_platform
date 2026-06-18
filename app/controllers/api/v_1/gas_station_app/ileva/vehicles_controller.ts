@@ -7,8 +7,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { IlevaPartner } from '#services/ileva/types'
 
 export default class VehiclesController {
-  async show({ request, response }: HttpContext) {
-    const licensePlate = sanitizePlate('LKW2314')
+  async show({ params, request, response }: HttpContext) {
+    const licensePlate = sanitizePlate(params.plate)
     if (!licensePlate) {
       return response.status(422).json({ message: 'A placa informada esta vazia' })
     }
