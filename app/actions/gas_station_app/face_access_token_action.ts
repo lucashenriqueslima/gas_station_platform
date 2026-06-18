@@ -1,5 +1,4 @@
 import faceRecognitionConfig from '#config/face_recognition'
-import { UserRole } from '#models/user'
 import User from '#models/user'
 import type UserFaceImage from '#models/user_face_image'
 import type FaceRecognitionService from '#services/face_recognition_service'

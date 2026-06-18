@@ -3,8 +3,6 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import User from '#models/user'
-import { policies } from '#generated/policies'
-import { permission } from 'node:process'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {
@@ -26,7 +24,6 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       : Object.keys(errorsBag)
           .filter((code) => code !== 'E_VALIDATION_ERROR')
           .map((code) => errorsBag[code])[0]
-    
 
     /**
      * Data shared with all Inertia pages. Make sure you are using
