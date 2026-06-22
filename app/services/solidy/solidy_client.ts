@@ -1,44 +1,38 @@
-import ezchatConfig from '#config/ezchat'
-import type { EzChatIndicationPayload, EzChatPayload, EzChatRunParams } from './types.js'
+import solidyConfig from '#config/solidy'
+import type { SolidyIngestLeadParams } from './types.js'
 
-const INDICATION_RUN_ID = 'a207d182-c7a6-4399-a049-d58df21a832c'
-const INDICATION_SENDER = 'disparo_indicacao'
-const INDICATION_DISCOUNT = '0,60'
+class SolidyClient {
+  async ingestLead(params: SolidyIngestLeadParams) {
+    const payload = this.compactPayload({
+      id_frentista: params.attendantId,
+      nome_frentista: params.attendantName,
+      origem: params.origin,
+      id_associado_ileva: params.ilevaAssociateId,
+      nome_associado_ileva: params.ilevaAssociateName,
+      nome_lead: params.leadName,
+      telefone_lead: params.leadPhone,
+    })
 
-class EzChatClient {
-  async run<TPayload extends EzChatPayload = EzChatPayload>(params: EzChatRunParams<TPayload>) {
-    const url = this.buildRunUrl(params.runId, params.sender)
-
-    return this.fetchJson(url, {
+    return this.fetchJson(new URL(solidyConfig.ingestLeadsUrl), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(params.payload),
+      body: JSON.stringify(payload),
     })
   }
 
-  async sendMessage(payload: Omit<EzChatIndicationPayload, 'desconto'>) {
-    return this.sendIndication(INDICATION_RUN_ID, {
-      ...payload,
-      desconto: INDICATION_DISCOUNT,
-    })
-  }
+  private compactPayload(payload: Record<string, string | number | null | undefined>) {
+    return Object.fromEntries(
+      Object.entries(payload).flatMap(([key, value]) => {
+        if (value === null || value === undefined) {
+          return []
+        }
 
-  async sendIndication(runId: string, payload: EzChatIndicationPayload) {
-    return this.run({
-      runId,
-      sender: INDICATION_SENDER,
-      payload,
-    })
-  }
-
-  private buildRunUrl(runId: string, sender: string) {
-    const url = new URL(`/run/${runId}/`, ezchatConfig.baseUrl)
-    url.searchParams.set('sender', sender)
-    url.searchParams.set('token', secret(ezchatConfig.apiToken))
-
-    return url
+        const normalized = `${value}`.trim()
+        return normalized ? [[key, normalized]] : []
+      })
+    )
   }
 
   private async fetchJson(url: URL, init: RequestInit): Promise<unknown> {
@@ -47,20 +41,21 @@ class EzChatClient {
       headers: {
         Accept: 'application/json',
         ...init.headers,
+        Authorization: `Bearer ${secret(solidyConfig.ingestLeadsApiKey)}`,
       },
       signal: AbortSignal.timeout(15000),
     })
 
     const data = await parseJsonResponse(response)
     if (!response.ok) {
-      throw new EzChatApiError(extractMessage(data), response.status, data)
+      throw new SolidyApiError(extractMessage(data), response.status, data)
     }
 
     return data
   }
 }
 
-export class EzChatApiError extends Error {
+export class SolidyApiError extends Error {
   constructor(
     message: string,
     public status: number,
@@ -73,7 +68,7 @@ export class EzChatApiError extends Error {
 function extractMessage(data: unknown) {
   if (data && typeof data === 'object') {
     const message =
-      readString(data, 'mensagem') ?? readString(data, 'message') ?? readString(data, 'error')
+      readString(data, 'message') ?? readString(data, 'error') ?? readString(data, 'status')
 
     if (message) {
       return message
@@ -84,7 +79,7 @@ function extractMessage(data: unknown) {
     return data.trim()
   }
 
-  return 'Falha ao consultar a API EZChat'
+  return 'Falha ao enviar lead para a API Solidy'
 }
 
 async function parseJsonResponse(response: Response) {
@@ -113,4 +108,4 @@ function secret(value: string | { release: () => string }) {
   return typeof value === 'object' ? value.release() : value
 }
 
-export const ezchatClient = new EzChatClient()
+export const solidyClient = new SolidyClient()

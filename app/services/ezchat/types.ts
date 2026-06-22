@@ -17,5 +17,6 @@ export type EzChatRunParams<TPayload extends EzChatPayload = EzChatPayload> = {
 export type EzChatIndicationPayload = {
   indicado: string
   associado: string
+  desconto: string
   numero_phone: string
 }

@@ -62,5 +62,15 @@ export default await Env.create(new URL('../', import.meta.url), {
   EZCHAT_API_TOKEN: Env.schema.secret(),
 
   EVOLUTION_BASE_URL: Env.schema.string({ format: 'url', tld: false }),
-  EVOLUTION_API_KEY: Env.schema.secret()
+  EVOLUTION_API_KEY: Env.schema.secret(),
+
+  SOLIDY_INGEST_LEADS_URL: Env.schema.string({ format: 'url', tld: false }),
+  SOLIDY_INGEST_LEADS_API_KEY: Env.schema.secret(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring @adonisjs/queue
+  |----------------------------------------------------------
+  */
+  QUEUE_DRIVER: Env.schema.enum(['redis', 'database', 'sync'] as const)
 })
