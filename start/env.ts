@@ -67,10 +67,4 @@ export default await Env.create(new URL('../', import.meta.url), {
   SOLIDY_INGEST_LEADS_URL: Env.schema.string({ format: 'url', tld: false }),
   SOLIDY_INGEST_LEADS_API_KEY: Env.schema.secret(),
 
-  /*
-  |----------------------------------------------------------
-  | Variables for configuring @adonisjs/queue
-  |----------------------------------------------------------
-  */
-  QUEUE_DRIVER: Env.schema.enum(['redis', 'database', 'sync'] as const)
 })
