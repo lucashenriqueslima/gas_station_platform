@@ -73,7 +73,7 @@ export default class AssociateLeadsController {
         ilevaAssociateId: associateId,
         ilevaAssociateName: associateName,
         leadName: name,
-        leadPhone: phone,
+        leadPhone: `55${phone}`,
       }),
     ])
 
