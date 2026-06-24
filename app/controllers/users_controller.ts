@@ -73,11 +73,19 @@ export default class UsersController {
 
   async store({ request, response, session, bouncer }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('create')
-    
+
     const payload = await request.validateUsing(storeUser)
 
-    if(await bouncer.with(UserPolicy).denies('chooseRole')){
+    if (await bouncer.with(UserPolicy).denies('chooseRole')) {
       payload.role = UserRole.ATTENDANT.value
+    }
+
+    if (payload.role === 'admin') {
+      await User.create({ ...payload })
+
+      session.flash({ success: 'Usuário criado com sucesso!' })
+
+      return response.redirect().toRoute('users.index')
     }
 
     const faceImages = this.userAction.getFaceImages(request, true, session)
